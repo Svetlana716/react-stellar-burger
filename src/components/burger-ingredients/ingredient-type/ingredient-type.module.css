@@ -1,0 +1,16 @@
+.ingredientsType {
+
+}
+
+.typeList {
+    display: flex;
+    column-gap: 24px;
+    flex-wrap: wrap;
+    margin: 0;
+    composes: pl-4 pr-4 from global;
+}
+
+.listItem {
+    list-style-type: none;
+}
+

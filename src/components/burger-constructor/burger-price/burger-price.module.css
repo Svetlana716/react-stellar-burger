@@ -1,0 +1,12 @@
+.burgerPrice {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.priceContainer {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}

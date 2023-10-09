@@ -1,0 +1,22 @@
+.ingredients {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+}
+
+.tabContainer {
+    display: flex;
+}
+
+.ingredientsContainer {
+    margin: 0;
+    padding: 0;
+    max-height: 85vh;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+    list-style-type: none;
+    
+}

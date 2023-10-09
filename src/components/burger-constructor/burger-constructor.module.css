@@ -1,0 +1,8 @@
+.constructor {
+    max-width: 600px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+
+}
