@@ -1,5 +1,6 @@
 import styles from "./ingredient-item.module.css";
-
+import PropTypes from "prop-types";
+import { ingredientPropType } from "../../../utils/prop-types";
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const IngredientItem = ({ingredient, count}) => {
@@ -15,6 +16,11 @@ const IngredientItem = ({ingredient, count}) => {
             <p className={`text text_type_main-default ${styles.name}`}>{name}</p>
         </div>
     )
-  }
-  
+  };
+
+  IngredientItem.propTypes = {
+    ingredient: ingredientPropType.isRequired,
+    count: PropTypes.number,
+  };
+
   export default IngredientItem;

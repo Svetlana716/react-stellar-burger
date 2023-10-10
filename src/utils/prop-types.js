@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
 
 export const ingredientPropType = PropTypes.shape({
-  _id: PropTypes.number.isRequired,
+  _id: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   proteins: PropTypes.number.isRequired,

@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { ingredientPropType } from "../../../utils/prop-types";
 import styles from "./ingredient-type.module.css";
 import IngredientItem from "../ingredient-item/ingredient-item"
 
@@ -24,7 +26,7 @@ const ingredientCount = React.useMemo(
             <ul className={`${styles.typeList}`}>
                 {ingredientType.map(ingredient => {
                     return (
-                        <li key={ingredient.id} className={`${styles.listItem}`}>
+                        <li key={ingredient._id} className={`${styles.listItem}`}>
                             <IngredientItem ingredient={ingredient} count={ingredientCount.prevVal}/>
                         </li>
                     )
@@ -32,6 +34,11 @@ const ingredientCount = React.useMemo(
             </ul>
         </section>
     )
-  }
+  };
+
+  IngredientType.propTypes = {
+    ingredientType: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
+    title: PropTypes.string.isRequired,
+};
   
   export default IngredientType;

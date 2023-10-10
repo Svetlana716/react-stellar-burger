@@ -1,5 +1,6 @@
 import React from "react";
-
+import PropTypes from "prop-types";
+import { ingredientPropType } from "../../../utils/prop-types";
 import styles from "./ingredients-list.module.css";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -35,7 +36,7 @@ const IngredientsList = ({ ingredients }) => {
             <ul className={`${styles.otherIngredientsList} custom-scroll`}>
                 {otherIngredients.map(ingredient => {
                     return (
-                        <li key={ingredient.id} className={`${styles.listItem}`}>
+                        <li key={ingredient._id} className={`${styles.listItem}`}>
                             <DragIcon type="primary" />
                             <ConstructorElement
                                 text={ingredient.name}
@@ -55,6 +56,10 @@ const IngredientsList = ({ ingredients }) => {
             />
         </div>
     )
-}
+};
+
+IngredientsList.propTypes = {
+    ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
+};
 
 export default IngredientsList;

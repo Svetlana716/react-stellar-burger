@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { ingredientPropType } from "../../../utils/prop-types";
 import styles from "./burger-price.module.css";
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -21,6 +23,10 @@ const BurgerPrice = ({ ingredients }) => {
             </Button>
         </section>
     );
-}
+};
+
+BurgerPrice.propTypes = {
+    ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
+};
 
 export default BurgerPrice;
