@@ -7,7 +7,8 @@ const IngredientItem = ({ingredient, count}) => {
     const {image, name, price} = ingredient;
     return (
         <div className={`${styles.card}`}>
-            <Counter count={count} size="default" />
+            {count && 
+                <Counter count={count} size="default" />}
             <img className={`${styles.image}`} src={image} alt={name} />
             <div className={`${styles.price}`}>
                 <p className="text text_type_digits-default">{price}</p>

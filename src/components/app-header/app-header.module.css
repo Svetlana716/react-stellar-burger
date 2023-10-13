@@ -40,3 +40,7 @@
     display: flex;
     gap: 8px;
 }
+
+.menuLink:hover {
+    opacity: .6;
+}

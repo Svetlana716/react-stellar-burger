@@ -49,6 +49,7 @@ const BurgerIngredients = ({ ingredients }) => {
 
     return (
         <section className={`${styles.ingredients}`}>
+            <h1 className={`text text_type_main-large`}>Соберите бургер</h1>
             <div className={`${styles.tabContainer}`}>
                 <Tab value='bun' active={current === 'bun'} onClick={handleScroll}>
                     Булки

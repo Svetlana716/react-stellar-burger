@@ -15,10 +15,6 @@
   composes: pt-10 from global;
 }
 
-.title {
-  composes: pb-5 from global;
-}
-
 .burgerContainer {
   display: flex;
   column-gap: 56px;
