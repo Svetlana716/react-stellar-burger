@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { ingredientPropType } from "../../../utils/prop-types";
 import styles from "./ingredient-type.module.css";
@@ -8,21 +8,21 @@ import IngredientDetails from "./ingredient-details/ingredient-details"
 
 const IngredientType = ({ title, ingredientType }) => {
   // стейт компонента
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [currentIngredient, setCurrentIngredient] = React.useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentIngredient, setCurrentIngredient] = useState(null);
 
   // обработчики событий(изменение стейта)
-  const handleOpenModal = React.useCallback ((item) => {
+  const handleOpenModal = useCallback ((item) => {
     setCurrentIngredient(item);
     setModalVisible(true);
   }, []);
 
-  const handleCloseModal = React.useCallback (() => {
+  const handleCloseModal = useCallback (() => {
     setModalVisible(false);
   }, []);
 
   // колличество конкретного ингридиента(для счетчика ингридиента)
-  const ingredientCount = React.useMemo(
+  const ingredientCount = useMemo(
     () =>
       ingredientType.reduce(function (prevVal, item) {
         if (!prevVal[item]) {

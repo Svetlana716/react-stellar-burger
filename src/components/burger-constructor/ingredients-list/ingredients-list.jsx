@@ -1,4 +1,4 @@
-import React from "react";
+import { useMemo } from "react";
 import PropTypes from "prop-types";
 import { ingredientPropType } from "../../../utils/prop-types";
 import styles from "./ingredients-list.module.css";
@@ -7,7 +7,7 @@ import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burg
 const IngredientsList = ({ ingredients }) => {
 
     //фильтрация массива ингридиентов
-    const bun = React.useMemo(
+    const bun = useMemo(
         () =>
             ingredients.filter((ingredient) => {
                 return ingredient.type === 'bun';
@@ -15,7 +15,7 @@ const IngredientsList = ({ ingredients }) => {
         [ingredients]
     );
 
-    const otherIngredients = React.useMemo(
+    const otherIngredients = useMemo(
         () =>
             ingredients.filter((ingredient) => {
                 return ingredient.type !== 'bun';

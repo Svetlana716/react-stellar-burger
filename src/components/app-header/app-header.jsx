@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 
 import styles from "./app-header.module.css";
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -7,7 +7,7 @@ import { ListIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 function AppHeader() {
-  const [state, setState] = React.useState('constructor');
+  const [state, setState] = useState('constructor');
     return (
       <header className={`${styles.header}`}>
         <div className={`${styles.container}`}>

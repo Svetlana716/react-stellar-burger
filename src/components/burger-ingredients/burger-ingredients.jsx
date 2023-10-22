@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useMemo, useRef } from "react";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from "prop-types";
 import { ingredientPropType } from "../../utils/prop-types";
@@ -7,10 +7,10 @@ import IngredientType from "./ingredient-type/ingredient-type"
 
 const BurgerIngredients = ({ ingredients }) => {
     //задаем стейт компонента
-    const [current, setCurrent] = React.useState('bun');
+    const [current, setCurrent] = useState('bun');
 
     //фильтрация массива ингридиентов
-    const bun = React.useMemo(
+    const bun = useMemo(
         () =>
             ingredients.filter((ingredient) => {
                 return ingredient.type === 'bun';
@@ -18,7 +18,7 @@ const BurgerIngredients = ({ ingredients }) => {
         [ingredients]
     );
 
-    const sauce = React.useMemo(
+    const sauce = useMemo(
         () =>
             ingredients.filter((ingredient) => {
                 return ingredient.type === 'sauce';
@@ -26,7 +26,7 @@ const BurgerIngredients = ({ ingredients }) => {
         [ingredients]
     );
 
-    const main = React.useMemo(
+    const main = useMemo(
         () =>
             ingredients.filter((ingredient) => {
                 return ingredient.type === 'main';
@@ -35,9 +35,9 @@ const BurgerIngredients = ({ ingredients }) => {
     );
 
     // ссылки на тип ингридиента в списке 
-    const bunRef = React.useRef(null);
-    const sauceRef = React.useRef(null);
-    const mainRef = React.useRef(null);
+    const bunRef = useRef(null);
+    const sauceRef = useRef(null);
+    const mainRef = useRef(null);
 
     //скролл к выбранному типу ингридиента
     const handleScroll = (value) => {

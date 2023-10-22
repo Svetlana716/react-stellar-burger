@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { ingredientPropType } from "../../../utils/prop-types";
 import styles from "./burger-order.module.css";
@@ -8,7 +8,7 @@ import OrderDetails from "./order-details/order-details"
 
 const BurgerOrder = ({ ingredients }) => {
 
-    const [modalVisible, setModalVisible] = React.useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const handleOpenModal = () => {
         setModalVisible(true);
@@ -18,7 +18,7 @@ const BurgerOrder = ({ ingredients }) => {
         setModalVisible(false);
     };
     // стоимость корзины
-    const total = React.useMemo(
+    const total = useMemo(
         () =>
         ingredients.reduce((acc, ingredient) => acc + ingredient.price, 0),
         [ingredients]
