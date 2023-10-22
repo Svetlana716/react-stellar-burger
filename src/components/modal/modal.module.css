@@ -1,0 +1,27 @@
+.modal {
+    border-radius: 40px;
+    border: 1px solid rgba(76, 76, 255, 0.20);
+    background: #1C1C21;
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
+        0px 4px 8px 0px rgba(0, 0, 0, 0.04),
+        0px 16px 24px 0px rgba(0, 0, 0, 0.04),
+        0px 24px 32px 0px rgba(0, 0, 0, 0.04);
+    composes: p-10 from global;
+    width: 720px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.closeButton {
+    position: absolute;
+    top: 60px;
+    right: 40px;
+}
+
+.closeButton:hover {
+   opacity: .6;
+}
