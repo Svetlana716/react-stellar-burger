@@ -1,65 +1,41 @@
-import { useMemo } from "react";
-import PropTypes from "prop-types";
-import { ingredientPropType } from "../../../utils/prop-types";
+import { useContext } from "react";
 import styles from "./ingredients-list.module.css";
-import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
+import { ConstructorContext } from "../../../services/constructor-context";
+import ConstructorIngredientItem from "../ingredients-list/constructor-ingredient-item/constructor-ingredient-item"
 
-const IngredientsList = ({ ingredients }) => {
-
-    //фильтрация массива ингридиентов
-    const bun = useMemo(
-        () =>
-            ingredients.filter((ingredient) => {
-                return ingredient.type === 'bun';
-            }),
-        [ingredients]
-    );
-
-    const otherIngredients = useMemo(
-        () =>
-            ingredients.filter((ingredient) => {
-                return ingredient.type !== 'bun';
-            }),
-        [ingredients]
-    );
-
+const IngredientsList = () => {
+    const { constructorState } = useContext(ConstructorContext);
+    const { bun, ingredients } = constructorState;
 
     return (
-        <div className={`${styles.list}`}>
-            <ConstructorElement
+        <section className={`${styles.list}`}>
+            {bun && <ConstructorElement
                 type="top"
                 isLocked={true}
-                text={`${bun[0].name} (верх)`}
-                price={bun[0].price}
-                thumbnail={bun[0].image}
-            />
-            <ul className={`${styles.otherIngredientsList} custom-scroll`}>
-                {otherIngredients.map(ingredient => {
+                text={`${bun.name} (верх)`}
+                price={bun.price}
+                thumbnail={bun.image}
+            />}
+            <ul className={`${styles.ingredientsList} custom-scroll`}>
+                {ingredients.map(ingredient => {
                     return (
-                        <li key={ingredient._id} className={`${styles.listItem}`}>
-                            <DragIcon type="primary" />
-                            <ConstructorElement
-                                text={ingredient.name}
-                                price={ingredient.price}
-                                thumbnail={ingredient.image}
-                            />
+                        <li key={ingredient._id}>
+                            <ConstructorIngredientItem ingredient={ingredient} />
                         </li>
                     )
                 })}
             </ul>
-            <ConstructorElement
+            
+            {bun && <ConstructorElement
                 type="bottom"
                 isLocked={true}
-                text={`${bun[0].name} (низ)`}
-                price={bun[0].price}
-                thumbnail={bun[0].image}
-            />
-        </div>
+                text={`${bun.name} (низ)`}
+                price={bun.price}
+                thumbnail={bun.image}
+            />}
+        </section>
     )
-};
-
-IngredientsList.propTypes = {
-    ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };
 
 export default IngredientsList;

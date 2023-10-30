@@ -1,18 +1,19 @@
-import { useState, useMemo, useRef } from "react";
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import PropTypes from "prop-types";
-import { ingredientPropType } from "../../utils/prop-types";
+import { useState, useMemo, useRef, useContext } from "react";
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from "./burger-ingredients.module.css";
-import IngredientType from "./ingredient-type/ingredient-type"
+import IngredientType from "./ingredient-type/ingredient-type";
+import { IngredientsContext } from "../../services/ingredients-context";
 
-const BurgerIngredients = ({ ingredients }) => {
+const BurgerIngredients = () => {
+    const { ingredients } = useContext(IngredientsContext);
+
     //задаем стейт компонента
     const [current, setCurrent] = useState('bun');
 
     //фильтрация массива ингридиентов
     const bun = useMemo(
         () =>
-            ingredients.filter((ingredient) => {
+        ingredients.filter((ingredient) => {
                 return ingredient.type === 'bun';
             }),
         [ingredients]
@@ -20,7 +21,7 @@ const BurgerIngredients = ({ ingredients }) => {
 
     const sauce = useMemo(
         () =>
-            ingredients.filter((ingredient) => {
+        ingredients.filter((ingredient) => {
                 return ingredient.type === 'sauce';
             }),
         [ingredients]
@@ -28,7 +29,7 @@ const BurgerIngredients = ({ ingredients }) => {
 
     const main = useMemo(
         () =>
-            ingredients.filter((ingredient) => {
+        ingredients.filter((ingredient) => {
                 return ingredient.type === 'main';
             }),
         [ingredients]
@@ -76,8 +77,5 @@ const BurgerIngredients = ({ ingredients }) => {
     );
 };
 
-BurgerIngredients.propTypes = {
-    ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
-};
 
 export default BurgerIngredients;

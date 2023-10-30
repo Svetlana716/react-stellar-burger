@@ -1,14 +1,22 @@
-import { useState, useMemo } from "react";
-import PropTypes from "prop-types";
-import { ingredientPropType } from "../../../utils/prop-types";
+import { useState, useContext, useEffect } from "react";
 import styles from "./burger-order.module.css";
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../../modal/modal";
-import OrderDetails from "./order-details/order-details"
+import OrderDetails from "./order-details/order-details";
+import { ConstructorContext } from "../../../services/constructor-context"
+import { postOrder } from "../../../utils/api"
 
-const BurgerOrder = ({ ingredients }) => {
-
+const BurgerOrder = () => {
+    const { constructorState } = useContext(ConstructorContext);
+    const { bun, ingredients, total } = constructorState;
     const [modalVisible, setModalVisible] = useState(false);
+    const [orderInfo, setOrderInfo] = useState({
+        name: '',
+        order: {
+            number: null
+        },
+        success: false,
+    });
 
     const handleOpenModal = () => {
         setModalVisible(true);
@@ -17,12 +25,38 @@ const BurgerOrder = ({ ingredients }) => {
     const handleCloseModal = () => {
         setModalVisible(false);
     };
-    // стоимость корзины
-    const total = useMemo(
-        () =>
-        ingredients.reduce((acc, ingredient) => acc + ingredient.price, 0),
-        [ingredients]
-    );
+
+    const getIngredientsId = () => {
+        if (bun !== null) {
+            const bunId = bun._id;
+            const ingredientsId = ingredients.map(item => item._id);
+            return [bunId, ...ingredientsId, bunId]
+        }
+    };
+
+    const ingredientsId = getIngredientsId();
+
+    const handleMakeOrder = () => {
+        postOrder(ingredientsId)
+            .then((data) => {
+                setOrderInfo({
+                    ...orderInfo,
+                    name: data.name,
+                    order: {
+                        ...orderInfo.order,
+                        number: data.order.number
+                    },
+                    success: data.success,
+                })
+                handleOpenModal()
+            })
+            .catch(() => {
+                setOrderInfo({
+                    ...orderInfo,
+                    success: false,
+                })
+            })
+    };
 
     return (
         <section className={`${styles.burgerOrder}`}>
@@ -30,19 +64,15 @@ const BurgerOrder = ({ ingredients }) => {
                 <span className="text text_type_digits-medium">{total}</span>
                 <CurrencyIcon type="primary" />
             </div>
-            <Button onClick={handleOpenModal} htmlType="button" type="primary" size="large">
+            <Button onClick={handleMakeOrder} htmlType="button" type="primary" size="large">
                 Оформить заказ
             </Button>
-            {modalVisible && 
+            {modalVisible && orderInfo.success &&
                 <Modal onClose={handleCloseModal}>
-                    <OrderDetails />
+                    <OrderDetails orderInfo={orderInfo} />
                 </Modal>}
         </section>
     );
-};
-
-BurgerOrder.propTypes = {
-    ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };
 
 export default BurgerOrder;

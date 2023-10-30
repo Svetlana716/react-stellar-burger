@@ -1,4 +1,9 @@
-const apiUrl = 'https://norma.nomoreparties.space/api/ingredients';
+const config = { 
+  baseUrl: 'https://norma.nomoreparties.space/api', 
+  headers: {  
+    'Content-Type': 'application/json; charset=UTF-8'
+  } 
+}; 
 
 function checkResponse (res) { 
   if (!res.ok) { 
@@ -8,6 +13,19 @@ function checkResponse (res) {
 };
 
 export function getData () { 
-  return fetch(apiUrl) 
+  return fetch(`${config.baseUrl}/ingredients`, { 
+    headers: config.headers 
+}) 
+.then(checkResponse) 
+}; 
+
+export function postOrder (constructorIngredients) { 
+  return fetch(`${config.baseUrl}/orders`, { 
+  headers: config.headers,
+  method: 'POST', 
+  body: JSON.stringify({ 
+    "ingredients": constructorIngredients,
+} ), 
+}) 
 .then(checkResponse) 
 }; 
