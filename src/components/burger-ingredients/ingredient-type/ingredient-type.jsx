@@ -1,4 +1,5 @@
 import { useState, useCallback, useContext } from "react";
+import {useModal} from "../../../hooks/useModal"
 import PropTypes from "prop-types";
 import { ingredientPropType } from "../../../utils/prop-types";
 import styles from "./ingredient-type.module.css";
@@ -10,17 +11,13 @@ import { ConstructorContext } from "../../../services/constructor-context"
 const IngredientType = ({ title, ingredientType }) => {
   const { constructorDispatch } = useContext(ConstructorContext);
   // стейт компонента
-  const [modalVisible, setModalVisible] = useState(false);
+  const { isModalOpen, openModal, closeModal } = useModal();
   const [currentIngredient, setCurrentIngredient] = useState(null);
 
   // обработчики событий(изменение стейта)
-  const handleOpenModal = useCallback ((item) => {
-    setCurrentIngredient(item);
-    setModalVisible(true);
-  }, []);
-
-  const handleCloseModal = useCallback (() => {
-    setModalVisible(false);
+  const handleOpenModal = useCallback ((ingredient) => {
+    setCurrentIngredient(ingredient);
+    openModal()
   }, []);
 
   const handleAddIngredient = useCallback ((ingredient) => {
@@ -41,8 +38,8 @@ const IngredientType = ({ title, ingredientType }) => {
           )
         })}
       </ul>
-      {modalVisible && currentIngredient &&
-        <Modal onClose={handleCloseModal}>
+      {isModalOpen && currentIngredient &&
+        <Modal onClose={closeModal}>
           <IngredientDetails ingredient={currentIngredient} />
         </Modal>}
     </section>

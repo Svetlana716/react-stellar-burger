@@ -19,8 +19,6 @@ const App = () => {
     total: 0,
   };
 
-
-
   const constructorReducer = (state, action) => {
     switch (action.type) {
       case 'bun':
@@ -40,8 +38,17 @@ const App = () => {
       case 'deleteIngredients':
         return {
           ...state,
+          bun: action.payload,
           ingredients: state.ingredients.filter((item) => item._id !== action.payload._id),
           total: state.total - action.payload.price,
+        };
+
+        case 'resetConstructor':
+        return {
+          ...state,
+          bun: null,
+          ingredients: [],
+          total: 0,
         };
           
 
@@ -58,11 +65,12 @@ const App = () => {
       .then((data) => {
         if (data && data.success) {
           setIngredients(data.data);
-          setLoading(false);
         }
       })
       .catch(() => {
         setError(true);
+      })
+      .finally(() => {
         setLoading(false);
       })
   }, []);
@@ -76,14 +84,12 @@ const App = () => {
           {error && <RequestMessage message={'Произошла ошибка'} />}
           {!loading &&
             !error && (
-              <>
                 <IngredientsContext.Provider value={{ ingredients, setIngredients }}>
                   <ConstructorContext.Provider value={{ constructorState, constructorDispatch }}>
                     <BurgerIngredients />
                     <BurgerConstructor />
                   </ConstructorContext.Provider>
                 </IngredientsContext.Provider>
-              </>
             )}
         </div>
       </main>

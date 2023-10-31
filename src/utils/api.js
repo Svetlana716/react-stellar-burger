@@ -12,20 +12,24 @@ function checkResponse (res) {
   return res.json(); 
 };
 
+//универсальная функция запроса с проверкой ответа
+function request(url, options) {
+  // принимает два аргумента: урл и объект опций, как и `fetch`
+  return fetch(url, options).then(checkResponse)
+};
+
 export function getData () { 
-  return fetch(`${config.baseUrl}/ingredients`, { 
+  return request(`${config.baseUrl}/ingredients`, { 
     headers: config.headers 
-}) 
-.then(checkResponse) 
+})
 }; 
 
 export function postOrder (constructorIngredients) { 
-  return fetch(`${config.baseUrl}/orders`, { 
+  return request(`${config.baseUrl}/orders`, { 
   headers: config.headers,
   method: 'POST', 
   body: JSON.stringify({ 
     "ingredients": constructorIngredients,
 } ), 
-}) 
-.then(checkResponse) 
+})
 }; 

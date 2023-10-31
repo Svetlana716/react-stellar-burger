@@ -5,6 +5,10 @@
                 0px 0px 16px rgba(51, 51, 255, 0.25);
 }
 
+.orderName {
+    text-align: center;
+}
+
 .image {
     composes: mt-15 mb-15 from global; 
 }

@@ -18,9 +18,9 @@ const IngredientsList = () => {
                 thumbnail={bun.image}
             />}
             <ul className={`${styles.ingredientsList} custom-scroll`}>
-                {ingredients.map(ingredient => {
+                {ingredients.map((ingredient, index) => {
                     return (
-                        <li key={ingredient._id}>
+                        <li key={index}>
                             <ConstructorIngredientItem ingredient={ingredient} />
                         </li>
                     )
