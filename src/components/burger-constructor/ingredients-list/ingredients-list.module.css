@@ -6,7 +6,7 @@
     composes: mt-25 from global;
 }
 
-.otherIngredientsList {
+.ingredientsList {
     display: flex; 
     flex-direction: column;
     gap: 10px;
@@ -16,10 +16,4 @@
     max-height: 62vh;
     overflow-y: scroll;
     padding-right: 8px;
-}
-
-.listItem {
-    display: flex;
-    gap: 8px;
-    align-items: center;
 }
