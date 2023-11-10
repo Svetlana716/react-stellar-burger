@@ -24,12 +24,12 @@ export function getData () {
 })
 }; 
 
-export function postOrder (constructorIngredients) { 
+export function postData (constructorIngredients) { 
   return request(`${config.baseUrl}/orders`, { 
   headers: config.headers,
   method: 'POST', 
   body: JSON.stringify({ 
-    "ingredients": constructorIngredients,
+    ingredients: constructorIngredients,
 } ), 
 })
 }; 

@@ -1,29 +1,44 @@
-import { useState, useCallback, useContext } from "react";
-import {useModal} from "../../../hooks/useModal"
+import { useCallback, useMemo } from "react";
+import { useModal } from "../../../hooks/useModal"
 import PropTypes from "prop-types";
 import { ingredientPropType } from "../../../utils/prop-types";
 import styles from "./ingredient-type.module.css";
 import IngredientItem from "../ingredient-item/ingredient-item";
 import Modal from "../../modal/modal";
 import IngredientDetails from "./ingredient-details/ingredient-details";
-import { ConstructorContext } from "../../../services/constructor-context"
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentIngredient, unsetCurrentIngredient } from '../../../services/ingredient-details/actions';
+import { getConstructorIngredientsPath } from '../../../services/burger-constructor/selectors';
+import { getIngredientDetailsPath } from '../../../services/ingredient-details/selectors';
 
 const IngredientType = ({ title, ingredientType }) => {
-  const { constructorDispatch } = useContext(ConstructorContext);
-  // стейт компонента
+  const {bun, otherIngredients} = useSelector(getConstructorIngredientsPath);
+  const { currentIngredient } = useSelector(getIngredientDetailsPath);
+  const dispatch = useDispatch();
   const { isModalOpen, openModal, closeModal } = useModal();
-  const [currentIngredient, setCurrentIngredient] = useState(null);
 
-  // обработчики событий(изменение стейта)
+  //функции для счетчика ингридиента
+  const bunCounter = (ingredient) => {
+    if (bun !== null) {
+      return bun._id === ingredient._id ? 2 : 0;
+    }
+  };
+
+  const ingredientCounter = (ingredient) => {
+    const otherIngredientsList = otherIngredients.filter(item => item.name === ingredient.name);
+      return otherIngredientsList.length;
+  };
+
+
+  // обработчики открытия/закрытия модалок с изменением стора
   const handleOpenModal = useCallback ((ingredient) => {
-    setCurrentIngredient(ingredient);
+    dispatch(setCurrentIngredient(ingredient))
     openModal()
   }, []);
 
-  const handleAddIngredient = useCallback ((ingredient) => {
-    ingredient.type === 'bun' ?
-    constructorDispatch({type: 'bun', payload: ingredient}) : 
-    constructorDispatch({type: 'ingredients', payload: ingredient})
+  const handleCloseModal = useCallback (() => {
+    dispatch(unsetCurrentIngredient())
+    closeModal()
   }, []);
   
   return (
@@ -32,14 +47,14 @@ const IngredientType = ({ title, ingredientType }) => {
       <ul className={`${styles.typeList}`}>
         {ingredientType.map(ingredient => {
           return (
-            <li /* onClick={() => handleOpenModal(ingredient)} */ onClick={() => handleAddIngredient(ingredient)} key={ingredient._id} className={`${styles.listItem}`}>
-              <IngredientItem ingredient={ingredient} count={1} />
+            <li onClick={() => handleOpenModal(ingredient)} key={ingredient._id} className={`${styles.listItem}`}>
+              <IngredientItem ingredient={ingredient} count={ingredient.type === 'bun' ? bunCounter(ingredient) : ingredientCounter(ingredient)} />
             </li>
           )
         })}
       </ul>
       {isModalOpen && currentIngredient &&
-        <Modal onClose={closeModal}>
+        <Modal onClose={handleCloseModal}>
           <IngredientDetails ingredient={currentIngredient} />
         </Modal>}
     </section>

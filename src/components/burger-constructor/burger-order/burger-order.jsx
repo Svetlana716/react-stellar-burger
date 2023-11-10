@@ -1,69 +1,44 @@
-import { useState, useContext } from "react";
-import {useModal} from "../../../hooks/useModal"
+import { useModal } from "../../../hooks/useModal";
 import styles from "./burger-order.module.css";
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../../modal/modal";
 import OrderDetails from "./order-details/order-details";
 import RequestMessage from "../../app/request-message/request-message";
-import { ConstructorContext } from "../../../services/constructor-context"
-import { postOrder } from "../../../utils/api"
+import { useDispatch, useSelector } from "react-redux";
+import { getOrderInfoPath } from '../../../services/order-details/selectors';
+import { getConstructorIngredientsPath } from '../../../services/burger-constructor/selectors';
+// thunk для запроса данных с сервера
+import { postOrder } from '../../../services/order-details/actions';
 
 const BurgerOrder = () => {
-    const { constructorState, constructorDispatch } = useContext(ConstructorContext);
-    const { bun, ingredients, total } = constructorState;
-    const { isModalOpen, openModal, closeModal } = useModal();
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
-    const [orderInfo, setOrderInfo] = useState({
-        name: '',
-        order: {
-            number: null
-        },
-        success: false,
-    });
+    const dispatch = useDispatch(); 
 
+    const { loading, error, success } = useSelector(getOrderInfoPath);
+
+    const { bun, otherIngredients, totalPrice } = useSelector(getConstructorIngredientsPath);
+
+    const { isModalOpen, closeModal, openModal } = useModal();
+
+    //функция, создающая массив из id ингридиентов для post запроса 
     const getIngredientsId = () => {
         if (bun !== null) {
             const bunId = bun._id;
-            const ingredientsId = ingredients.map(item => item._id);
-            return [bunId, ...ingredientsId, bunId]
+            const otherIngredientsId = otherIngredients.map(item => item._id);
+            return [bunId, ...otherIngredientsId, bunId]
         }
     };
-
-    const ingredientsId = getIngredientsId();
-
+    
     const handleMakeOrder = () => {
-        setLoading(true);
-        postOrder(ingredientsId)
-            .then((data) => {
-                setOrderInfo({
-                    ...orderInfo,
-                    name: data.name,
-                    order: {
-                        ...orderInfo.order,
-                        number: data.order.number
-                    },
-                    success: data.success,
-                })
-                openModal()
-            })
-            .catch(() => {
-                setOrderInfo({
-                    ...orderInfo,
-                    success: false,
-                })
-                setError(true);
-            })
-            .finally(() => {
-                setLoading(false);
-                constructorDispatch({type: 'resetConstructor'});
-            })
+        dispatch(postOrder(getIngredientsId()))
+        if (success) {
+            openModal()
+        }
     };
     
     return (
         <section className={`${styles.burgerOrder}`}>
             <div className={`${styles.orderContainer}`}>
-                <span className="text text_type_digits-medium">{total}</span>
+                <span className="text text_type_digits-medium">{totalPrice}</span>
                 <CurrencyIcon type="primary" />
             </div>
             {loading && <RequestMessage message={'Загрузка...'} />} 
@@ -79,9 +54,9 @@ const BurgerOrder = () => {
                 Оформить заказ
             </Button>}
             
-            {isModalOpen && orderInfo.success &&
+            {isModalOpen && success &&
                 <Modal onClose={closeModal}>
-                    <OrderDetails orderInfo={orderInfo} />
+                    <OrderDetails />
                 </Modal>}
         </section>
     );

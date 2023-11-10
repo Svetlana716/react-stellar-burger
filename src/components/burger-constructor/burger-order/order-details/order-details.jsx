@@ -1,10 +1,13 @@
 import styles from "./order-details.module.css";
 import tickImage from "../../../../images/done.png";
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import { getOrderInfoPath } from '../../../../services/order-details/selectors';
+import { getOrderNumberPath } from '../../../../services/order-details/selectors';
 
-const OrderDetails = ({ orderInfo }) => {
-    const { name, order } = orderInfo;
-    const { number } = order;
+const OrderDetails = () => {
+    const { name } = useSelector(getOrderInfoPath);
+    const { number } = useSelector(getOrderNumberPath);
+    
     return (
         <>
             <p className={`${styles.orderNumber} text text_type_digits-large`}>{number}</p>
@@ -15,10 +18,6 @@ const OrderDetails = ({ orderInfo }) => {
         </>
 
     );
-};
-
-OrderDetails.propTypes = {
-    orderInfo: PropTypes.object.isRequired,
 };
 
 export default OrderDetails;

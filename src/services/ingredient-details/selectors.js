@@ -1,0 +1,1 @@
+export const getIngredientDetailsPath = store => store.ingredientsDetails;
