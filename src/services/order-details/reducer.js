@@ -30,7 +30,7 @@ export const orderReducer = (state = initialState, action) => {
                 name: action.payload.name,
                 order: {
                     ...state.order,
-                    number: action.payload.number
+                    number: action.payload.order.number
                 },
                 success: action.payload.success,
                 loading: false,
