@@ -2,11 +2,14 @@ import styles from "./order-details.module.css";
 import tickImage from "../../../../images/done.png";
 import { useSelector } from "react-redux";
 import { getOrderInfoPath } from '../../../../services/order-details/selectors';
-import { getOrderNumberPath } from '../../../../services/order-details/selectors';
 
 const OrderDetails = () => {
-    const { name } = useSelector(getOrderInfoPath);
-    const { number } = useSelector(getOrderNumberPath);
+    const orderInfo = useSelector(getOrderInfoPath);
+    const  name  = orderInfo.name;
+    const  number  = orderInfo.order.number;
+
+    console.log(number);
+    // все равно не получается ((
     
     return (
         <>

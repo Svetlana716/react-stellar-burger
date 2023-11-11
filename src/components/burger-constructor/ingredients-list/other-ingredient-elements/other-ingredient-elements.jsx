@@ -28,7 +28,7 @@ const { otherIngredients } = useSelector(getConstructorIngredientsPath);
                 otherIngredients.length > 0 ?
                ( otherIngredients.map((ingredient, index) => {
                     return (
-                        <li key={ingredient._id}>
+                        <li key={ingredient.uniqId}>
                             <ConstructorIngredientItem ingredient={ingredient} index={index}/>
                         </li>
                     )

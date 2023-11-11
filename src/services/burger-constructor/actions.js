@@ -15,7 +15,7 @@ export const addOtherIngredient = (ingredient) => ({
     type: ADD_OTHER_INGREDIENT, 
     payload: {
         ...ingredient,
-        _id: uuidv4(),
+        uniqId: uuidv4(),
     }
 });
 
