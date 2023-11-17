@@ -25,7 +25,7 @@ const { bun } = useSelector(getConstructorIngredientsPath);
   return (
     <div ref={dropRef} style={{ opacity }}>
       {
-        bun !== null ?
+        bun ?
         (<ConstructorElement 
             type={type} 
             isLocked={true} 
