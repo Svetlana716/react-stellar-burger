@@ -1,16 +1,14 @@
-.header {
-    width: 100%;
-    margin: 0 auto;
-    background-color: #1C1C21;
+.profileContainer {
+    display: inline-flex;
+    column-gap: 60px;
 }
 
 .menu {
-    max-width: 1280px;
-    margin: 0 auto;
+    max-width: 320px;
     box-sizing: border-box;
-    composes: pb-4 pt-4 from global;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
@@ -37,6 +35,10 @@
     opacity: .6;
 }
 
-.logo {
-    composes: pb-2 pt-2 from global;
+.menuLink {
+    composes: text_color_inactive from global;
+}
+
+.active {
+    
 }

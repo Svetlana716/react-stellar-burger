@@ -6,7 +6,12 @@
     composes: pl-4 pr-4 from global;
 }
 
-.listItem {
-    list-style-type: none;
+.link {
+    color: #F2F2F3;
+    text-decoration: none;
+}
+
+.link:hover {
+    opacity: .6;
 }
 

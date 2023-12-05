@@ -53,29 +53,61 @@ const BurgerIngredients = () => {
         }
     }, [inViewBun, inViewSauce, inViewMain]);
 
+    const onTabClick = (tab) => {
+        dispatch(setCurrentTab(tab));
+        const item = document.getElementById(tab);
+        if (item) {
+            item.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+
     return (
         <section className={`${styles.ingredients}`}>
             <h1 className={`text text_type_main-large`}>Соберите бургер</h1>
             <div className={`${styles.tabContainer}`}>
-                <Tab value='bun' active={current === 'bun'}>
+                <Tab 
+                    value='bun' 
+                    active={current === 'bun'}
+                    onClick={onTabClick}
+                    >
                     Булки
                 </Tab>
-                <Tab value='sauce' active={current === 'sauce'}>
+                <Tab 
+                    value='sauce' 
+                    active={current === 'sauce'}
+                    onClick={onTabClick}
+                >
                     Соусы
                 </Tab>
-                <Tab value='main' active={current === 'main'}>
+                <Tab 
+                    value='main' 
+                    active={current === 'main'}
+                    onClick={onTabClick}
+                >
                     Начинки
                 </Tab>
             </div>
             <ul className={`${styles.ingredientsContainer} custom-scroll`}>
                 <li ref={bunRef}>
-                    <IngredientType title={'Булки'} ingredientType={bun} />
+                    <IngredientType 
+                        title='Булки' 
+                        titleId= 'bun'
+                        ingredientType={bun} 
+                        />
                 </li>
                 <li ref={sauceRef}>
-                    <IngredientType title={'Соусы'} ingredientType={sauce} />
+                    <IngredientType 
+                        title='Соусы'
+                        titleId= 'sauce'
+                        ingredientType={sauce} 
+                    />
                 </li>
                 <li ref={mainRef}>
-                    <IngredientType title={'Начинки'} ingredientType={main} />
+                    <IngredientType 
+                        title={'Начинки'} 
+                        titleId= 'main'
+                        ingredientType={main} 
+                    />
                 </li>
             </ul>
         </section>

@@ -1,0 +1,1 @@
+export const getAuthInfoPath = store => store.authorization;

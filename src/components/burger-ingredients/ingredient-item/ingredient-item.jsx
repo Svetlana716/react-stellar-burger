@@ -4,10 +4,10 @@ import { ingredientPropType } from "../../../utils/prop-types";
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
 
-const IngredientItem = ({ingredient, count}) => {
-    const {image, name, price, type } = ingredient;
-
-    const [{ opacity} , dragRef] = useDrag({
+const IngredientItem = ({ ingredient, count }) => {
+    const { image, name, price, type } = ingredient;
+ 
+    const [{ opacity }, dragRef] = useDrag({
         type: type === 'bun' ? 'bun' : 'otherIngredients',
         item: ingredient,
         collect: monitor => ({
@@ -26,11 +26,11 @@ const IngredientItem = ({ingredient, count}) => {
             <p className={`text text_type_main-default ${styles.name}`}>{name}</p>
         </div>
     )
-  };
+};
 
-  IngredientItem.propTypes = {
+IngredientItem.propTypes = {
     ingredient: ingredientPropType.isRequired,
     count: PropTypes.number,
-  };
+};
 
-  export default IngredientItem;
+export default IngredientItem;

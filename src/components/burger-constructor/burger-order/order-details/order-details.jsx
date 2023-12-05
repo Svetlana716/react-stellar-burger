@@ -3,12 +3,11 @@ import tickImage from "../../../../images/done.png";
 import { useSelector } from "react-redux";
 import { getOrderInfoPath } from '../../../../services/order-details/selectors';
 import { getOrderNumberPath } from '../../../../services/order-details/selectors';
-import RequestMessage from "../../../app/request-message/request-message";
+import RequestMessage from "../../../request-message/request-message";
 
 const OrderDetails = () => {
-    const { name } = useSelector(getOrderInfoPath);
+    const { name, loading, error, success } = useSelector(getOrderInfoPath);
     const { number } = useSelector(getOrderNumberPath);
-    const { loading, error, success } = useSelector(getOrderInfoPath);
 
     return (
         <>

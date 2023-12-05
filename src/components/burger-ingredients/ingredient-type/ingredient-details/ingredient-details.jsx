@@ -1,8 +1,21 @@
 import styles from "./ingredient-details.module.css";
-import { ingredientPropType } from "../../../../utils/prop-types";
+import { useParams } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { getIngredientsPath } from '../../../../services/burger-ingredients/selectors';
 
-const IngredientDetails = ({ingredient}) => {
-    const {image_large, name, calories, proteins, fat, carbohydrates} = ingredient;
+const IngredientDetails = () => {
+
+    const { allIngredients } = useSelector(getIngredientsPath);
+    const { ingredientId } = useParams();
+    console.log(allIngredients);
+
+    const getIngredientById = (id) => {
+        return allIngredients.find((ingredient) => ingredient._id === id);
+    };
+
+    const ingredient = getIngredientById(ingredientId);
+    const { image_large, name, calories, proteins, fat, carbohydrates } = ingredient;
+
     return (
         <>
             <h3 className={`${styles.title} text text_type_main-large`}>Детали ингредиента</h3>
@@ -31,8 +44,4 @@ const IngredientDetails = ({ingredient}) => {
     );
 };
 
-IngredientDetails.propTypes = {
-    ingredient: ingredientPropType.isRequired,
-  };
-
-export default IngredientDetails ;
+export default IngredientDetails;

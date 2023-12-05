@@ -1,4 +1,4 @@
-import { getData } from '../../utils/api';
+import { getIngredientsData } from '../../utils/api';
 
 export const GET_INGREDIENTS_REQUEST = 'GET_ITEMS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_ITEMS_SUCCESS';
@@ -17,7 +17,7 @@ export const getIngredients = () => (dispatch) => {
         type: GET_INGREDIENTS_REQUEST,
     })
 
-    getData()
+    getIngredientsData()
     .then(res => {
         if (res && res.success) {
             dispatch({

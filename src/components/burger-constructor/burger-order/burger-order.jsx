@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getConstructorIngredientsPath } from '../../../services/burger-constructor/selectors';
 // thunk для запроса данных с сервера
 import { postOrder } from '../../../services/order-details/actions';
+import { useMemo } from "react";
 
 const BurgerOrder = () => {
     const dispatch = useDispatch(); 
 
-    const { bun, otherIngredients, totalPrice } = useSelector(getConstructorIngredientsPath);
+    const { bun, otherIngredients } = useSelector(getConstructorIngredientsPath);
 
     const { isModalOpen, closeModal, openModal } = useModal();
 
@@ -28,11 +29,19 @@ const BurgerOrder = () => {
         dispatch(postOrder(getIngredientsId()));
         openModal();
     };
+
+    const priceCounter = useMemo(() => {
+        if (bun) {
+        const otherIngredientsPrice = otherIngredients.reduce((acc, el) => acc + el.price, 0);
+        const bunPrice = bun.price * 2;
+        return otherIngredientsPrice + bunPrice;
+    }
+    }, [otherIngredients, bun]);
     
     return (
         <section className={`${styles.burgerOrder}`}>
             <div className={`${styles.orderContainer}`}>
-                <span className="text text_type_digits-medium">{totalPrice}</span>
+                <span className="text text_type_digits-medium">{priceCounter}</span>
                 <CurrencyIcon type="primary" />
             </div>
             {!bun && <Button disabled htmlType="button" type="primary" size="large">

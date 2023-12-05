@@ -1,4 +1,4 @@
-import { postData } from '../../utils/api';
+import { postOrderData } from '../../utils/api';
 import { RESET_CONSTRUCTOR } from '../burger-constructor/actions';
 
 export const POST_ORDER_REQUEST = 'POST_ORDER_REQUEST';
@@ -11,7 +11,7 @@ export const postOrder = (ingredientsId) => (dispatch) => {
         type: POST_ORDER_REQUEST,
     })
 
-    postData(ingredientsId)
+    postOrderData(ingredientsId)
     .then(res => {
         if (res && res.success) {
             dispatch({
