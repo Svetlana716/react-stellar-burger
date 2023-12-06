@@ -5,6 +5,12 @@
   align-items: center;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .linkContainer {
   display: inline-flex;
   column-gap: 8px;

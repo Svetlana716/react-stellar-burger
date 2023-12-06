@@ -35,7 +35,7 @@ export const ForgotPasswordPage = () => {
   
   return (
     <AuthPageWrapper>
-      <form onSubmit={handleResetPasswordFirstStep}>
+      <form className={styles.form} onSubmit={handleResetPasswordFirstStep}>
         <h2 className="text text_type_main-medium mb-6">Восстановление пароля</h2>
         <EmailInput
           onChange={onChange}

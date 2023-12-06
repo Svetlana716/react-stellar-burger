@@ -30,7 +30,7 @@ export const RegisterPage = () => {
 
   return (
     <AuthPageWrapper>
-      <form onSubmit={handleRegisterUser}>
+      <form className={styles.form} onSubmit={handleRegisterUser}>
         <h2 className="text text_type_main-medium mb-6">Регистрация</h2>
         <Input
           type={'text'}
