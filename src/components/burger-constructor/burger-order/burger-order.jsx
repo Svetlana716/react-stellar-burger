@@ -8,6 +8,8 @@ import { getConstructorIngredientsPath } from '../../../services/burger-construc
 // thunk для запроса данных с сервера
 import { postOrder } from '../../../services/order-details/actions';
 import { useMemo } from "react";
+import { OnlyAuth } from "../../protected-route/protected-route";
+
 
 const BurgerOrder = () => {
     const dispatch = useDispatch(); 
@@ -50,9 +52,10 @@ const BurgerOrder = () => {
                 Оформить заказ</Button>}
             
             {isModalOpen && 
+            <OnlyAuth component={
                 <Modal onClose={closeModal}>
                     <OrderDetails />
-                </Modal>}
+                </Modal>} />}
         </section>
     );
 };
