@@ -16,7 +16,7 @@ const setUser = (user) => ({
     payload: user,
   });
   
-export const registrationUser = ({name, email, password}) => 
+export const registrationUser = ({ email, password, name }) => 
     (dispatch) => {
     dispatch({
         type: SET_USER_REQUEST,
@@ -34,8 +34,7 @@ export const registrationUser = ({name, email, password}) =>
               })
         }
     })
-    .catch((err) => {
-        console.log(err);
+    .catch(() => {
         dispatch({
             type: SET_USER_FAILED,
           })
@@ -50,7 +49,7 @@ export const getUser = () => (dispatch) => {
         type: SET_USER_REQUEST,
     })
 
-    getUserInfo()
+    return getUserInfo()
     .then((res) => {
         if (res && res.success) {
         dispatch(setUser(res))
@@ -88,8 +87,7 @@ export const loginToProfile = (email, password) => (dispatch) => {
                   })
             }
         })
-        .catch((err) => {
-            console.log(err);
+        .catch(() => {
             dispatch({
                 type: SET_USER_FAILED,
               })
@@ -99,11 +97,11 @@ export const loginToProfile = (email, password) => (dispatch) => {
         )
 };
 
-export const logoutOfProfile = (refreshToken) => (dispatch) => {
+export const logoutOfProfile = () => (dispatch) => {
     dispatch({
         type: SET_USER_REQUEST,
     })
-        logout(refreshToken)
+        logout()
         .then((res) => {
             if (res && res.success) {
             localStorage.removeItem("accessToken");
@@ -111,8 +109,7 @@ export const logoutOfProfile = (refreshToken) => (dispatch) => {
             dispatch(setUser(null))
             }
         })
-        .catch((err) => {
-            console.log(err);
+        .catch(() => {
             dispatch({
                 type: SET_USER_FAILED,
               })

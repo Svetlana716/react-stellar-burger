@@ -9,9 +9,9 @@ import { useDispatch } from "react-redux";
 export const RegisterPage = () => {
   const dispatch = useDispatch();
 
-  const [form, setValue] = useState({ name: '', email: '', password: '' });
+  const [form, setValue] = useState({ email: '', password: '', name: '' });
 
-  const { name, email, password } = form;
+  const { email, password, name } = form;
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });

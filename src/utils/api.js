@@ -19,100 +19,6 @@ const request = (url, options) => {
   return fetch(url, options).then(checkResponse)
 };
 
-//регистрация пользователя
-
-export const registerUser = (email, password, name) => {
-  return request(`${config.baseUrl}/auth/register`, {
-    method: 'POST',
-    headers: config.headers,
-    body: JSON.stringify({
-      email: email,
-      password: password,
-      name: name,
-    }),
-  });
-};
-
-// получение списка ингридиентов
-
-export const getIngredientsData = () => {
-  return request(`${config.baseUrl}/ingredients`, {
-    headers: config.headers,
-  })
-};
-
-//создание заказа
-
-export const postOrderData = (constructorIngredients) => {
-  return request(`${config.baseUrl}/orders`, {
-    method: 'POST',
-    headers: config.headers,
-    body: JSON.stringify({
-      ingredients: constructorIngredients,
-    }),
-  });
-};
-
-
-//сброс пароля
-
-export const resetPasswordFirstStep = (email) => {
-  return request(`${config.baseUrl}/password-reset`, {
-    method: 'POST',
-    headers: config.headers,
-    body: JSON.stringify({
-      email: email,
-    }),
-  });
-};
-
-export const resetPasswordSecondStep = (password, token) => {
-  return request(`${config.baseUrl}/password-reset/reset`, {
-    method: 'POST',
-    headers: config.headers,
-    body: JSON.stringify({
-      password: password,
-      token: token
-    }),
-  });
-};
-
-//получение информации о пользователе
-
-export const getUserInfo = () => {
-  return request(`${config.baseUrl}/auth/user`, {
-    headers: {
-      ...config.headers,
-      authorization: localStorage.getItem('accessToken')
-    },
-  })
-};
-
-//авторизация по логину и паролю
-
-export const login = (email, password) => {
-  return request(`${config.baseUrl}/auth/login`, {
-    method: "POST",
-    headers: config.headers,
-    body: JSON.stringify({
-      email: email,
-      password: password,
-    }),
-  })
-};
-
-//выход из профиля
-
-export const logout = (refreshToken) => {
-  return request(`${config.baseUrl}auth/logout`, {
-    method: "POST",
-    headers: config.headers,
-    body: JSON.stringify({
-      token: refreshToken,
-    }),
-  })
-};
-
 //обновление токена
 
 export const refreshToken = () => {
@@ -147,5 +53,105 @@ export const fetchWithRefresh = async (url, options) => {
     }
   }
 };
+
+//регистрация пользователя
+
+export const registerUser = (email, password, name) => {
+  return request(`${config.baseUrl}/auth/register`, {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
+      email: email,
+      password: password,
+      name: name,
+    }),
+  });
+};
+
+// получение списка ингридиентов
+
+export const getIngredientsData = () => {
+  return request(`${config.baseUrl}/ingredients`, {
+    headers: config.headers,
+  })
+};
+
+//создание заказа
+
+export const postOrderData = (constructorIngredients) => {
+  return fetchWithRefresh(`${config.baseUrl}/orders`, {
+    method: 'POST',
+    headers: {
+      ...config.headers,
+      authorization: localStorage.getItem('accessToken'),
+    },
+    body: JSON.stringify({
+      ingredients: constructorIngredients,
+    }),
+  });
+};
+
+//сброс пароля
+
+export const resetPasswordFirstStep = (email) => {
+  return request(`${config.baseUrl}/password-reset`, {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
+      email: email,
+    }),
+  });
+};
+
+export const resetPasswordSecondStep = (password, token) => {
+  return request(`${config.baseUrl}/password-reset/reset`, {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
+      password: password,
+      token: token
+    }),
+  });
+};
+
+//получение информации о пользователе
+
+export const getUserInfo = () => {
+  return fetchWithRefresh(`${config.baseUrl}/auth/user`, {
+    headers: {
+      ...config.headers,
+      authorization: localStorage.getItem('accessToken'),
+    },
+  })
+};
+
+//авторизация по логину и паролю
+
+export const login = (email, password) => {
+  return request(`${config.baseUrl}/auth/login`, {
+    method: "POST",
+    headers: config.headers,
+    body: JSON.stringify({
+      email: email,
+      password: password,
+    }),
+  })
+};
+
+//выход из профиля
+
+export const logout = () => {
+  return request(`${config.baseUrl}/auth/logout`, {
+    method: "POST",
+    headers: config.headers,
+    body: JSON.stringify({
+      token: localStorage.getItem('refreshToken'),
+    }),
+  })
+};
+
+
+
+
 
 

@@ -9,12 +9,12 @@ export const ProfilePage = () => {
   const { user } = useSelector(getAuthInfoPath);  
   
   const [form, setValue] = useState({
-    name: user.name, 
     email: user.email, 
-    password: user.password 
+    password: user.password,
+    name: user.name, 
 });
 
-  const { name, email, password } = form;
+  const { email, password, name } = form;
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });

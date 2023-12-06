@@ -3,7 +3,7 @@ import AuthPageWrapper from "../../components/auth-page-wrapper/auth-page-wrappe
 import { useState } from "react";
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from "react-router-dom";
-import { resetPasswordSecondStep, checkReject } from "../../utils/api";
+import { resetPasswordSecondStep } from "../../utils/api";
 
 export const ResetPasswordPage = () => {
 
@@ -29,7 +29,6 @@ export const ResetPasswordPage = () => {
         navigate('/reset-password');
       }
   })
-  .catch(checkReject)
 };
 
   return (

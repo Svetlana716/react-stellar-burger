@@ -29,10 +29,9 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         user: {
-          ...state.user,
           email: action.payload.user.email,
-          name: action.payload.user.name,
           password: action.payload.user.password,
+          name: action.payload.user.name,
       },
         success: action.payload.success,
         loading: false,
