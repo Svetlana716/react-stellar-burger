@@ -12,6 +12,6 @@
 }
 
 .link:hover {
-    opacity: .6;
+    color: var(--colors-interface-accent);
 }
 

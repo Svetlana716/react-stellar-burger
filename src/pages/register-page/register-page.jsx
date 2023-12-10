@@ -4,11 +4,14 @@ import { useState } from "react";
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from "react-router-dom";
 import { registrationUser } from "../../services/auth/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAuthInfoPath } from "../../services/auth/selectors";
+import RequestMessage from "../../components/request-message/request-message";
 
 export const RegisterPage = () => {
   const dispatch = useDispatch();
-
+  const { loading, error, message } = useSelector(getAuthInfoPath);
+  
   const [form, setValue] = useState({ email: '', password: '', name: '' });
 
   const { email, password, name } = form;
@@ -25,7 +28,7 @@ export const RegisterPage = () => {
   
   const handleRegisterUser = (e) => {
     e.preventDefault();
-    dispatch(registrationUser(form));
+    dispatch(registrationUser(email, password, name));
 };
 
   return (
@@ -57,9 +60,11 @@ export const RegisterPage = () => {
           name={'password'}
           extraClass="mb-6"
         />
-        <Button htmlType="submit" type="primary" size="large"  extraClass="mb-20">Зарегистрироваться</Button>
-      </form>
+        {loading && <RequestMessage message={'Загрузка...'} />}
+        {error && <RequestMessage error={error} message={message} />}
 
+        <Button htmlType="submit" type="primary" size="large" extraClass="mb-20">Зарегистрироваться</Button>
+      </form>
       <div className={styles.linkContainer}>
         <p className="text text_type_main-default text_color_inactive">Уже зарегистрированы?</p>
         <Button htmlType="button" type="secondary" size="medium" onClick={goToLoginPage} extraClass={styles.button}>Войти</Button>

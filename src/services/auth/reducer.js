@@ -10,7 +10,7 @@ const initialState = {
   user: null,
   
   isAuthChecked: false,
-
+  message: '',
   success: false,
   loading: false,
   error: false,
@@ -43,6 +43,7 @@ export const authReducer = (state = initialState, action) => {
         success: false,
         error: true,
         loading: false,
+        message: action.payload.message,
       }
 
     case SET_AUTH_CHECKED:

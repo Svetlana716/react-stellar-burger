@@ -1,6 +1,6 @@
 import styles from "../../components/auth-page-wrapper/auth-page-wrapper.module.css";
 import AuthPageWrapper from "../../components/auth-page-wrapper/auth-page-wrapper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from "react-router-dom";
 import { resetPasswordSecondStep } from "../../utils/api";
@@ -26,10 +26,17 @@ export const ResetPasswordPage = () => {
     resetPasswordSecondStep(password, token)
     .then(res => {
       if (res && res.success) {
-        navigate('/reset-password');
+        localStorage.removeItem("resetPassword");
+        navigate('/login');
       }
   })
 };
+
+useEffect(() => {
+  if (!localStorage.getItem('resetPassword')) {
+    navigate('/forgot-password', {replace: true});
+ }
+}, []);
 
   return (
     <AuthPageWrapper>

@@ -1,42 +1,9 @@
-.profileContainer {
-    display: inline-flex;
-    column-gap: 60px;
-}
-
-.menuContainer {
-    max-width: 320px;
-}
-
-.menu {
-    composes: mb-20 from global;
-}
-
-.menuList {
+.form {
     display: flex;
+    max-width: 480px;
     flex-direction: column;
-    margin: 0;
-    padding: 0;
 }
 
-.menuItem {
-    composes: pb-4 pt-4 pl-5 pr-5 from global;
-    list-style-type: none;
+.buttonsContainer {
+    align-self: flex-end;
 }
-
-.menuLink {
-    composes: text text_type_main-medium from global;
-    color: #F2F2F3;
-    text-decoration: none;
-    display: flex;
-    gap: 8px;
-}
-
-.menuLink:hover {
-    opacity: .6;
-}
-
-.menuLink {
-    composes: text_color_inactive from global;
-}
-
-.active {}

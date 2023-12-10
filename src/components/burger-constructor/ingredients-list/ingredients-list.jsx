@@ -6,9 +6,9 @@ const IngredientsList = () => {
 
     return (
         <section className={`${styles.list}`}>
-            <BunElement type={'top'} />
-            <OtherIngredientElements type={'center'} />
-            <BunElement type={'bottom'} />
+            <BunElement type='top' />
+            <OtherIngredientElements />
+            <BunElement type='bottom' />
         </section>
     )
 };

@@ -1,4 +1,4 @@
-import { getUserInfo, login, logout, registerUser } from "../../utils/api";
+import { getUserInfo, changeUserInfo, login, logout, registerUser } from "../../utils/api";
 
 export const SET_USER_REQUEST = 'SET_USER_REQUEST';
 export const SET_USER_SUCCESS = 'SET_USER_SUCCESS';
@@ -16,13 +16,13 @@ const setUser = (user) => ({
     payload: user,
   });
   
-export const registrationUser = ({ email, password, name }) => 
+export const registrationUser = (email, password, name) => 
     (dispatch) => {
     dispatch({
         type: SET_USER_REQUEST,
     });
     
-    registerUser(name, email, password)
+    registerUser(email, password, name)
     .then(res => {
         if (res && res.success) {
         localStorage.setItem("accessToken", res.accessToken);
@@ -34,9 +34,10 @@ export const registrationUser = ({ email, password, name }) =>
               })
         }
     })
-    .catch(() => {
+    .catch((res) => {
         dispatch({
             type: SET_USER_FAILED,
+            payload: res,
           })
     })
     .finally(
@@ -59,9 +60,10 @@ export const getUser = () => (dispatch) => {
               })
         }
     })
-    .catch(() => {
+    .catch((res) => {
         dispatch({
             type: SET_USER_FAILED,
+            payload: res,
           })
     })
     .finally(
@@ -69,7 +71,31 @@ export const getUser = () => (dispatch) => {
     )
 };
 
+export const changeUser = (email, name) => (dispatch) => {
+    dispatch({
+        type: SET_USER_REQUEST,
+    })
 
+    return changeUserInfo(email, name)
+    .then((res) => {
+        if (res && res.success) {
+        dispatch(setUser(res))
+        } else {
+            dispatch({
+                type: SET_USER_FAILED,
+              })
+        }
+    })
+    .catch((res) => {
+        dispatch({
+            type: SET_USER_FAILED,
+            payload: res,
+          })
+    })
+    .finally(
+        dispatch(setAuthChecked(true))
+    )
+};
 
 export const loginToProfile = (email, password) => (dispatch) => {
     dispatch({
@@ -87,9 +113,10 @@ export const loginToProfile = (email, password) => (dispatch) => {
                   })
             }
         })
-        .catch(() => {
+        .catch((res) => {
             dispatch({
                 type: SET_USER_FAILED,
+                payload: res,
               })
         })
         .finally(
@@ -109,9 +136,10 @@ export const logoutOfProfile = () => (dispatch) => {
             dispatch(setUser(null))
             }
         })
-        .catch(() => {
+        .catch((res) => {
             dispatch({
                 type: SET_USER_FAILED,
+                payload: res,
               })
         })
 };

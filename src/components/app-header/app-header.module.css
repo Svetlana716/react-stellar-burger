@@ -27,14 +27,22 @@
 }
 
 .menuLink {
-    color: #F2F2F3;
     text-decoration: none;
     display: flex;
     gap: 8px;
 }
 
-.menuLink:hover {
-    opacity: .6;
+.activeLink {
+    color: #F2F2F3;
+    composes: text text_type_main-default from global;
+}
+
+.inactiveLink {
+    composes: text text_type_main-default text_color_inactive from global;
+}
+
+.inactiveLink:hover {
+    color: var(--colors-interface-accent);
 }
 
 .logo {

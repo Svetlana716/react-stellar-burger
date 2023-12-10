@@ -76,6 +76,33 @@ export const getIngredientsData = () => {
   })
 };
 
+//получение информации о пользователе
+
+export const getUserInfo = () => {
+  return fetchWithRefresh(`${config.baseUrl}/auth/user`, {
+    headers: {
+      ...config.headers,
+      authorization: localStorage.getItem('accessToken'),
+    },
+  })
+};
+
+//изменение информации о пользователе
+
+export const changeUserInfo = (email, name) => {
+  return fetchWithRefresh(`${config.baseUrl}/auth/user`, {
+    method: 'PATCH',
+    headers: {
+      ...config.headers,
+      authorization: localStorage.getItem('accessToken'),
+    },
+    body: JSON.stringify({
+      email: email,
+      name: name,
+    }),
+  })
+};
+
 //создание заказа
 
 export const postOrderData = (constructorIngredients) => {
@@ -114,16 +141,7 @@ export const resetPasswordSecondStep = (password, token) => {
   });
 };
 
-//получение информации о пользователе
 
-export const getUserInfo = () => {
-  return fetchWithRefresh(`${config.baseUrl}/auth/user`, {
-    headers: {
-      ...config.headers,
-      authorization: localStorage.getItem('accessToken'),
-    },
-  })
-};
 
 //авторизация по логину и паролю
 

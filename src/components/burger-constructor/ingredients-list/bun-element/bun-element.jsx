@@ -21,7 +21,6 @@ const { bun } = useSelector(getConstructorIngredientsPath);
     }
   });
 
-
   return (
     <div ref={dropRef} style={{ opacity }}>
       {
@@ -31,8 +30,7 @@ const { bun } = useSelector(getConstructorIngredientsPath);
             isLocked={true} 
             text={`${bun.name} ${type === 'top' ? '(верх)' : '(низ)'}`} 
             price={bun.price} 
-            thumbnail={bun.image} />) : 
-        (<DropTarget type={type} />)
+            thumbnail={bun.image} />) : (<DropTarget type={type} />)
       }
     </div>
   );

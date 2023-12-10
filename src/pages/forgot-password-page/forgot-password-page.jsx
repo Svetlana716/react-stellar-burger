@@ -27,12 +27,12 @@ export const ForgotPasswordPage = () => {
     resetPasswordFirstStep(email)
     .then(res => {
       if (res && res.success) {
-        localStorage.setItem("resetPassword", res.success);
+        localStorage.setItem("resetPassword", res.message);
         navigate('/reset-password', {replace: true});
       }
   })
 };
-  
+
   return (
     <AuthPageWrapper>
       <form className={styles.form} onSubmit={handleResetPasswordFirstStep}>

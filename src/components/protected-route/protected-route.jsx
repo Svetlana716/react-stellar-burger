@@ -6,27 +6,25 @@ import RequestMessage from "../request-message/request-message";
 const Protected = ({ onlyUnAuth = false, component }) => {
 
   const { user, isAuthChecked } = useSelector(getAuthInfoPath);
-  
+
   const location = useLocation();
 
+  // Запрос еще выполняется
   if (!isAuthChecked) {
-    // Запрос еще выполняется
-    // Выводим прелоадер в ПР
     <RequestMessage message={'Загрузка...'} />
-  }
+  };
 
+  // Пользователь авторизован, но роут предназначен для неавторизованного пользователя
   if (onlyUnAuth && user) {
-    // Пользователь авторизован, но роут предназначен для неавторизованного пользователя
     // Делаем редирект на главную страницу или на тот адрес, что записан в location.state.from
     const { from } = location.state || { from: { pathname: "/" } };
     return <Navigate to={from} />;
   }
 
+  // Пользователь неавторизован, a роут для авторизованного пользователя
   if (!onlyUnAuth && !user) {
     return <Navigate to="/login" state={{ from: location }} />;
-  }
-
-  // !onlyUnAuth && user Пользователь авторизован и роут для авторизованного пользователя
+  };
 
   return component;
 };

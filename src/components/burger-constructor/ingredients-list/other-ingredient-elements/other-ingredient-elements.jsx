@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import styles from "./other-ingredient-elements.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
@@ -8,7 +7,7 @@ import ConstructorIngredientItem from './constructor-ingredient-item/constructor
 import { addOtherIngredient } from "../../../../services/burger-constructor/actions";
 
 
-const OtherIngredientElements = ({type}) => {
+const OtherIngredientElements = () => {
 const { otherIngredients } = useSelector(getConstructorIngredientsPath);
   const dispatch = useDispatch();
 
@@ -22,6 +21,7 @@ const { otherIngredients } = useSelector(getConstructorIngredientsPath);
     }
   });
 
+
   return (
     <ul ref={dropRef} style={{ opacity }} className={`${styles.otherIngredientsList} custom-scroll`}>
                 {
@@ -33,15 +33,10 @@ const { otherIngredients } = useSelector(getConstructorIngredientsPath);
                         </li>
                     )
                 })
-                ) :
-                (<DropTarget type={type} />)
+                ) : (<DropTarget type='center' />)
                 }
             </ul>
   );
 };
-
-OtherIngredientElements.propTypes = {
-  type: PropTypes.string.isRequired
-  }
 
 export default OtherIngredientElements;

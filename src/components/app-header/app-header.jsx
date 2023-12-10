@@ -13,7 +13,7 @@ const AppHeader = () => {
               {({ isActive }) => (
                 <>
                   <BurgerIcon type={isActive ? 'primary' : 'secondary'} />
-                  <span className={isActive ? "text text_type_main-default" : 'text text_type_main-default text_color_inactive'}>Конструктор</span>
+                  <span className={isActive ? styles.activeLink : styles.inactiveLink}>Конструктор</span>
                 </>
               )}
             </NavLink>
@@ -23,7 +23,7 @@ const AppHeader = () => {
             {({ isActive }) => (
                 <>
                   <ListIcon type={isActive ? 'primary' : 'secondary'} />
-                  <span className={isActive ? "text text_type_main-default" : 'text text_type_main-default text_color_inactive'}>Лента заказов</span>
+                  <span className={isActive ? styles.activeLink : styles.inactiveLink}>Лента заказов</span>
                 </>
               )}
             </NavLink>
@@ -40,7 +40,7 @@ const AppHeader = () => {
             {({ isActive }) => (
                 <>
                   <ProfileIcon type={isActive ? 'primary' : 'secondary'} />
-                  <span className={isActive ? "text text_type_main-default" : 'text text_type_main-default text_color_inactive'}>Личный кабинет</span>
+                  <span className={isActive ? styles.activeLink : styles.inactiveLink}>Личный кабинет</span>
                 </>
               )}
             </NavLink>

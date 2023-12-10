@@ -4,10 +4,13 @@ import { useState } from "react";
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from "react-router-dom";
 import { loginToProfile } from "../../services/auth/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAuthInfoPath } from "../../services/auth/selectors";
+import RequestMessage from "../../components/request-message/request-message";
 
 const LoginPage = () => {
     const dispatch = useDispatch();
+    const { loading, error, message } = useSelector(getAuthInfoPath);
 
     const [form, setValue] = useState({ email: '', password: '' });
 
@@ -38,7 +41,7 @@ const LoginPage = () => {
                 <h2 className="text text_type_main-medium mb-6">Вход</h2>
                 <EmailInput
                     onChange={onChange}
-                    value={form.email}
+                    value={email}
                     name={'email'}
                     placeholder="E-mail"
                     isIcon={false}
@@ -46,10 +49,12 @@ const LoginPage = () => {
                 />
                 <PasswordInput
                     onChange={onChange}
-                    value={form.password}
+                    value={password}
                     name={'password'}
                     extraClass="mb-6"
                 />
+                {loading && <RequestMessage message={'Загрузка...'} />}
+                {error && <RequestMessage error={error} message={message} />}
                 <Button htmlType="submit" type="primary" size="large" extraClass="mb-20">Войти</Button>
             </form>
 

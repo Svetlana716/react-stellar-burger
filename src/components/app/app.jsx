@@ -8,6 +8,7 @@ import RegisterPage from "../../pages/register-page/register-page";
 import ForgotPasswordPage from "../../pages/forgot-password-page/forgot-password-page";
 import ResetPasswordPage from "../../pages/reset-password-page/reset-password-page";
 import ProfilePage from "../../pages/profile-page/profile-page";
+import AccountPage from "../../pages/account-page/account-page";
 import NotFoundPage from "../../pages/not-found-page/not-found-page";
 //для модалки
 import IngredientDetails from '../../components/burger-ingredients/ingredient-type/ingredient-details/ingredient-details';
@@ -33,12 +34,9 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getIngredients())
+    dispatch(getIngredients());
+    dispatch(checkUserAuth());
   }, [dispatch]);
-
-    useEffect(() => {
-      dispatch(checkUserAuth());
-    }, [dispatch]);
 
   return (
     <PageWrapper>
@@ -49,7 +47,14 @@ const App = () => {
         <Route path="/register" element={<OnlyUnAuth component={<RegisterPage/>} />} />
         <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage/>} />} />
         <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPasswordPage/>} />} />
-        <Route path="/profile" element={<OnlyAuth component={<ProfilePage/>} />} />
+
+        <Route path="/profile" element={<OnlyAuth component={<AccountPage/>} />}>
+          <Route index element={<OnlyAuth component={<ProfilePage/>} />} />
+          <Route path="orders" element={<p>OrdersPage</p>}>
+            <Route path=":number" element={<p>OrderPage</p>} />
+          </Route>
+        </Route>
+        
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
 

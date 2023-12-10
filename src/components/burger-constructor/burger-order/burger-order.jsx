@@ -12,7 +12,7 @@ import { OnlyAuth } from "../../protected-route/protected-route";
 
 
 const BurgerOrder = () => {
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
 
     const { bun, otherIngredients } = useSelector(getConstructorIngredientsPath);
 
@@ -26,7 +26,7 @@ const BurgerOrder = () => {
             return [bunId, ...otherIngredientsId, bunId]
         }
     };
-    
+
     const handleMakeOrder = () => {
         dispatch(postOrder(getIngredientsId()));
         openModal();
@@ -34,12 +34,14 @@ const BurgerOrder = () => {
 
     const priceCounter = useMemo(() => {
         if (bun) {
-        const otherIngredientsPrice = otherIngredients.reduce((acc, el) => acc + el.price, 0);
-        const bunPrice = bun.price * 2;
-        return otherIngredientsPrice + bunPrice;
-    }
+            const otherIngredientsPrice = otherIngredients.reduce((acc, el) => acc + el.price, 0);
+            const bunPrice = bun.price * 2;
+            return otherIngredientsPrice + bunPrice;
+        } else {
+            return 0;
+        }
     }, [otherIngredients, bun]);
-    
+
     return (
         <section className={`${styles.burgerOrder}`}>
             <div className={`${styles.orderContainer}`}>
@@ -50,12 +52,12 @@ const BurgerOrder = () => {
                 Оформить заказ</Button>}
             {bun && <Button onClick={handleMakeOrder} htmlType="button" type="primary" size="large">
                 Оформить заказ</Button>}
-            
-            {isModalOpen && 
-            <OnlyAuth component={
-                <Modal onClose={closeModal}>
-                    <OrderDetails />
-                </Modal>} />}
+
+            {isModalOpen &&
+                <OnlyAuth component={
+                    <Modal onClose={closeModal}>
+                        <OrderDetails />
+                    </Modal>} />}
         </section>
     );
 };
