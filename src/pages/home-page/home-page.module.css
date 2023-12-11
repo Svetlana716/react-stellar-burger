@@ -1,0 +1,5 @@
+ .burgerContainer {
+    display: flex;
+    column-gap: 56px;
+    composes: pt-10 from global;
+  }

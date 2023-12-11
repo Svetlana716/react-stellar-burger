@@ -1,0 +1,9 @@
+.form {
+    display: flex;
+    max-width: 480px;
+    flex-direction: column;
+}
+
+.buttonsContainer {
+    align-self: flex-end;
+}

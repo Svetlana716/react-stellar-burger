@@ -1,44 +1,54 @@
-import { useState } from "react";
-
 import styles from "./app-header.module.css";
-import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
-import { BurgerIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ListIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Logo, BurgerIcon, ListIcon, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { NavLink, Link } from 'react-router-dom';
 
-function AppHeader() {
-  const [state, setState] = useState('constructor');
-    return (
-      <header className={`${styles.header}`}>
-        <div className={`${styles.container}`}>
-        <a className={`${styles.logo}`} href="#">
+const AppHeader = () => {
+
+  return (
+    <header className={styles.header}>
+      <nav className={styles.menu}>
+        <ul className={styles.menuList}>
+          <li className={styles.menuItem}>
+            <NavLink to="/" className={styles.menuLink}>
+              {({ isActive }) => (
+                <>
+                  <BurgerIcon type={isActive ? 'primary' : 'secondary'} />
+                  <span className={isActive ? styles.activeLink : styles.inactiveLink}>Конструктор</span>
+                </>
+              )}
+            </NavLink>
+          </li>
+          <li className={styles.menuItem}>
+            <NavLink to="/page" className={styles.menuLink}>
+            {({ isActive }) => (
+                <>
+                  <ListIcon type={isActive ? 'primary' : 'secondary'} />
+                  <span className={isActive ? styles.activeLink : styles.inactiveLink}>Лента заказов</span>
+                </>
+              )}
+            </NavLink>
+          </li>
+        </ul>
+
+        <Link to="/" className={styles.logo}>
           <Logo />
-        </a>
-          <nav className={`${styles.menu}`}>
-            <ul className={`${styles.menuList}`}>
-                <li className={`${styles.menuItem}`} onClick={() => setState('constructor')}>
-                  <a className={`${styles.menuLink}`} href="#">
-                    <BurgerIcon type={state === 'constructor'? 'primary' : 'secondary'} />
-                    <span className={`text text_type_main-default ${state !== 'constructor' && 'text_color_inactive'}`}>Конструктор</span>
-                  </a>
-                </li>
-                <li className={`${styles.menuItem}`} onClick={() => setState('orders')}>
-                  <a className={`${styles.menuLink}`} href="#">
-                    <ListIcon type={state === 'orders'? 'primary' : 'secondary'} />
-                    <span className={`text text_type_main-default ${state !== 'orders' && 'text_color_inactive'}`}>Лента заказов</span>
-                  </a>
-                </li>
-                <li className={`${styles.menuItem}`} onClick={() => setState('profile')}>
-                  <a className={`${styles.menuLink}`} href="#">
-                    <ProfileIcon type={state === 'profile'? 'primary' : 'secondary'} />
-                    <span className={`text text_type_main-default ${state !== 'profile' && 'text_color_inactive'}`}>Личный кабинет</span>
-                  </a>
-                </li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-    );
-  }
-  
-  export default AppHeader;
+        </Link>
+
+        <ul className={styles.menuList}>
+          <li className={styles.menuItem}>
+            <NavLink to="/profile" className={styles.menuLink}>
+            {({ isActive }) => (
+                <>
+                  <ProfileIcon type={isActive ? 'primary' : 'secondary'} />
+                  <span className={isActive ? styles.activeLink : styles.inactiveLink}>Личный кабинет</span>
+                </>
+              )}
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  );
+}
+
+export default AppHeader;

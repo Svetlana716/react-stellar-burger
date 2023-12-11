@@ -1,0 +1,48 @@
+.accountContainer {
+    display: flex;
+
+    column-gap: 60px;
+    width: 1240px;
+}
+
+.menuContainer {
+    max-width: 320px;
+    flex-grow: 2;
+}
+
+.contentContainer {
+    flex-grow: 3;
+}
+
+.menu {
+    composes: mb-20 from global;
+}
+
+.menuList {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+
+.menuItem {
+    composes: pb-4 pt-4 pr-5 from global;
+    list-style-type: none;
+}
+
+.paragraph {
+    composes: text text_type_main-default text_color_inactive from global;
+}
+
+.menuButton {
+    composes: text text_type_main-default text_color_inactive from global;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: var(--common-transition);
+    background: transparent;
+}
+
+.menuButton:hover {
+    color: var(--colors-interface-accent);
+}
