@@ -7,12 +7,12 @@ export const RESET_CONSTRUCTOR = 'RESET_CONSTRUCTOR';
 export const CHANGE_THE_ORDER_OF_OTHER_INGREDIENTS = 'CHANGE_THE_ORDER_OF_OTHER_INGREDIENTS';
 
 export const addBun = (ingredient) => ({
-    type: ADD_BUN, 
+    type: ADD_BUN,
     payload: ingredient,
 });
 
 export const addOtherIngredient = (ingredient) => ({
-    type: ADD_OTHER_INGREDIENT, 
+    type: ADD_OTHER_INGREDIENT,
     payload: {
         ...ingredient,
         uniqId: uuidv4(),
@@ -20,9 +20,9 @@ export const addOtherIngredient = (ingredient) => ({
 });
 
 export const changeTheOrderOfIngredients = (dragIndex, hoverIndex) => ({
-        type: CHANGE_THE_ORDER_OF_OTHER_INGREDIENTS,
-        payload: {
-            dragIndex: dragIndex,
-            hoverIndex: hoverIndex,  
-        }
+    type: CHANGE_THE_ORDER_OF_OTHER_INGREDIENTS,
+    payload: {
+        dragIndex: dragIndex,
+        hoverIndex: hoverIndex,
+    }
 });

@@ -4,16 +4,13 @@ import { useState, useEffect } from "react";
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from "react-router-dom";
 import { resetPasswordSecondStep } from "../../utils/api";
+import { useForm } from "../../hooks/useForm";
 
 export const ResetPasswordPage = () => {
 
-  const [form, setValue] = useState({ password: '', token: '' });
+  const { values, handleChange } = useForm({ password: '', token: '' });
 
-  const onChange = e => {
-    setValue({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const { password, token } = form;
+  const { password, token } = values;
 
   const navigate = useNavigate();
 
@@ -24,26 +21,24 @@ export const ResetPasswordPage = () => {
   const handleResetPasswordSecondStep = (e) => {
     e.preventDefault();
     resetPasswordSecondStep(password, token)
-    .then(res => {
-      if (res && res.success) {
+      .then(() => {
         localStorage.removeItem("resetPassword");
         navigate('/login');
-      }
-  })
-};
+      })
+  };
 
-useEffect(() => {
-  if (!localStorage.getItem('resetPassword')) {
-    navigate('/forgot-password', {replace: true});
- }
-}, []);
+  useEffect(() => {
+    if (!localStorage.getItem('resetPassword')) {
+      navigate('/forgot-password', { replace: true });
+    }
+  }, []);
 
   return (
     <AuthPageWrapper>
       <form className={styles.form} onSubmit={handleResetPasswordSecondStep}>
         <h2 className="text text_type_main-medium mb-6">Восстановление пароля</h2>
         <PasswordInput
-          onChange={onChange}
+          onChange={handleChange}
           value={password}
           placeholder={'Введите новый пароль'}
           name={'password'}
@@ -52,7 +47,7 @@ useEffect(() => {
         <Input
           type={'text'}
           placeholder={'Введите код из письма'}
-          onChange={onChange}
+          onChange={handleChange}
           value={token}
           name={'token'}
           error={false}

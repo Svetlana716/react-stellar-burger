@@ -8,11 +8,7 @@
         0px 24px 32px 0px rgba(0, 0, 0, 0.04);
     composes: p-10 from global;
     width: 720px;
-    min-height: 500px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    min-height: 450px;
     position: relative;
     z-index: 1;
 }

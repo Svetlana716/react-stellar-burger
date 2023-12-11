@@ -1,44 +1,37 @@
 import styles from "../../components/auth-page-wrapper/auth-page-wrapper.module.css";
 import AuthPageWrapper from "../../components/auth-page-wrapper/auth-page-wrapper";
-import { useState } from "react";
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from "react-router-dom";
 import { resetPasswordFirstStep } from "../../utils/api";
+import { useForm } from "../../hooks/useForm";
 
 export const ForgotPasswordPage = () => {
 
-  const [form, setValue] = useState({ email: '' });
+  const { values, handleChange } = useForm({ email: '' });
 
-  const onChange = e => {
-      setValue({ ...form, [e.target.name]: e.target.value });
-  };
+  const { email } = values;
 
-  const { email } = form;
-  
   const navigate = useNavigate();
 
   const goToLoginPage = () => {
-      navigate('/login');
+    navigate('/login');
   };
-  
 
   const handleResetPasswordFirstStep = (e) => {
     e.preventDefault();
     resetPasswordFirstStep(email)
-    .then(res => {
-      if (res && res.success) {
+      .then(res => {
         localStorage.setItem("resetPassword", res.message);
-        navigate('/reset-password', {replace: true});
-      }
-  })
-};
+        navigate('/reset-password', { replace: true });
+      })
+  };
 
   return (
     <AuthPageWrapper>
       <form className={styles.form} onSubmit={handleResetPasswordFirstStep}>
         <h2 className="text text_type_main-medium mb-6">Восстановление пароля</h2>
         <EmailInput
-          onChange={onChange}
+          onChange={handleChange}
           value={email}
           name={'email'}
           placeholder="Укажите e-mail"

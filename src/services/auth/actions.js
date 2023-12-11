@@ -14,36 +14,30 @@ const setAuthChecked = (value) => ({
 const setUser = (user) => ({
     type: SET_USER_SUCCESS,
     payload: user,
-  });
-  
-export const registrationUser = (email, password, name) => 
+});
+
+export const registrationUser = (email, password, name) =>
     (dispatch) => {
-    dispatch({
-        type: SET_USER_REQUEST,
-    });
-    
-    registerUser(email, password, name)
-    .then(res => {
-        if (res && res.success) {
-        localStorage.setItem("accessToken", res.accessToken);
-        localStorage.setItem("refreshToken", res.refreshToken);
-        dispatch(setUser(res))
-        } else {
-            dispatch({
-                type: SET_USER_FAILED,
-              })
-        }
-    })
-    .catch((res) => {
         dispatch({
-            type: SET_USER_FAILED,
-            payload: res,
-          })
-    })
-    .finally(
-        dispatch(setAuthChecked(true))
-    )
-};
+            type: SET_USER_REQUEST,
+        });
+
+        registerUser(email, password, name)
+            .then(res => {
+                localStorage.setItem("accessToken", res.accessToken);
+                localStorage.setItem("refreshToken", res.refreshToken);
+                dispatch(setUser(res))
+            })
+            .catch((res) => {
+                dispatch({
+                    type: SET_USER_FAILED,
+                    payload: res,
+                })
+            })
+            .finally(
+                dispatch(setAuthChecked(true))
+            )
+    };
 
 export const getUser = () => (dispatch) => {
     dispatch({
@@ -51,24 +45,18 @@ export const getUser = () => (dispatch) => {
     })
 
     return getUserInfo()
-    .then((res) => {
-        if (res && res.success) {
-        dispatch(setUser(res))
-        } else {
+        .then((res) => {
+            dispatch(setUser(res))
+        })
+        .catch((res) => {
             dispatch({
                 type: SET_USER_FAILED,
-              })
-        }
-    })
-    .catch((res) => {
-        dispatch({
-            type: SET_USER_FAILED,
-            payload: res,
-          })
-    })
-    .finally(
-        dispatch(setAuthChecked(true))
-    )
+                payload: res,
+            })
+        })
+        .finally(
+            dispatch(setAuthChecked(true))
+        )
 };
 
 export const changeUser = (email, name) => (dispatch) => {
@@ -77,47 +65,35 @@ export const changeUser = (email, name) => (dispatch) => {
     })
 
     return changeUserInfo(email, name)
-    .then((res) => {
-        if (res && res.success) {
-        dispatch(setUser(res))
-        } else {
+        .then((res) => {
+            dispatch(setUser(res))
+        })
+        .catch((res) => {
             dispatch({
                 type: SET_USER_FAILED,
-              })
-        }
-    })
-    .catch((res) => {
-        dispatch({
-            type: SET_USER_FAILED,
-            payload: res,
-          })
-    })
-    .finally(
-        dispatch(setAuthChecked(true))
-    )
+                payload: res,
+            })
+        })
+        .finally(
+            dispatch(setAuthChecked(true))
+        )
 };
 
 export const loginToProfile = (email, password) => (dispatch) => {
     dispatch({
         type: SET_USER_REQUEST,
     })
-        login(email, password)
+    login(email, password)
         .then((res) => {
-            if (res && res.success) {
             localStorage.setItem("accessToken", res.accessToken);
             localStorage.setItem("refreshToken", res.refreshToken);
             dispatch(setUser(res))
-            } else {
-                dispatch({
-                    type: SET_USER_FAILED,
-                  })
-            }
         })
         .catch((res) => {
             dispatch({
                 type: SET_USER_FAILED,
                 payload: res,
-              })
+            })
         })
         .finally(
             dispatch(setAuthChecked(true))
@@ -128,32 +104,30 @@ export const logoutOfProfile = () => (dispatch) => {
     dispatch({
         type: SET_USER_REQUEST,
     })
-        logout()
-        .then((res) => {
-            if (res && res.success) {
+    logout()
+        .then(() => {
             localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
             dispatch(setUser(null))
-            }
         })
         .catch((res) => {
             dispatch({
                 type: SET_USER_FAILED,
                 payload: res,
-              })
+            })
         })
 };
 
 export const checkUserAuth = () => (dispatch) => {
-        if (localStorage.getItem("accessToken")) {
-            dispatch(getUser())
-                .catch(() => {
-                    localStorage.removeItem("accessToken");
-                    localStorage.removeItem("refreshToken");
-                    dispatch(setUser(null))
-                })
-                .finally(() => dispatch(setAuthChecked(true)));
-        } else {
-            dispatch(setAuthChecked(true));
-        }
+    if (localStorage.getItem("accessToken")) {
+        dispatch(getUser())
+            .catch(() => {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                dispatch(setUser(null))
+            })
+            .finally(() => dispatch(setAuthChecked(true)));
+    } else {
+        dispatch(setAuthChecked(true));
+    }
 };

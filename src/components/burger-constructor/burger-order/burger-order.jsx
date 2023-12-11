@@ -6,7 +6,7 @@ import OrderDetails from "./order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
 import { getConstructorIngredientsPath } from '../../../services/burger-constructor/selectors';
 // thunk для запроса данных с сервера
-import { postOrder } from '../../../services/order-details/actions';
+import { postOrder, resetConstructor } from '../../../services/order-details/actions';
 import { useMemo } from "react";
 import { OnlyAuth } from "../../protected-route/protected-route";
 
@@ -32,6 +32,11 @@ const BurgerOrder = () => {
         openModal();
     };
 
+    const handleCloseModal = () => {
+        closeModal();
+        dispatch(resetConstructor());
+    };
+
     const priceCounter = useMemo(() => {
         if (bun) {
             const otherIngredientsPrice = otherIngredients.reduce((acc, el) => acc + el.price, 0);
@@ -55,7 +60,7 @@ const BurgerOrder = () => {
 
             {isModalOpen &&
                 <OnlyAuth component={
-                    <Modal onClose={closeModal}>
+                    <Modal onClose={handleCloseModal}>
                         <OrderDetails />
                     </Modal>} />}
         </section>

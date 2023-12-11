@@ -14,10 +14,15 @@ const IngredientDetails = () => {
     };
 
     const ingredient = getIngredientById(ingredientId);
+
+    if (!ingredient) {
+        return null;
+    }
+
     const { image_large, name, calories, proteins, fat, carbohydrates } = ingredient;
 
     return (
-        <>
+        <div className={styles.wrapper}>
             <h3 className={styles.title}>Детали ингредиента</h3>
             <img src={image_large} alt={name} />
             <p className={styles.ingredientName}>{name}</p>
@@ -39,7 +44,7 @@ const IngredientDetails = () => {
                     <p className='text text_type_digits-default text_color_inactive'>{carbohydrates}</p>
                 </li>
             </ul>
-        </>
+        </div>
 
     );
 };

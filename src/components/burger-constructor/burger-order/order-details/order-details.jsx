@@ -10,7 +10,7 @@ const OrderDetails = () => {
     const { number } = useSelector(getOrderNumberPath);
 
     return (
-        <>
+        <div className={styles.wrapper}>
             {loading && !success && <RequestMessage message={'Загрузка...'} />}
             {error && !success && <RequestMessage message={'Произошла ошибка'} />}
             {!loading && !error && success &&
@@ -22,7 +22,7 @@ const OrderDetails = () => {
                     <p className={styles.orderMessage}>Дождитесь готовности на орбитальной станции</p>
                 </>
             }
-        </>
+        </div>
 
     );
 };

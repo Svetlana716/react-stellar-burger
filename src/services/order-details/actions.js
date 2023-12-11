@@ -12,26 +12,19 @@ export const postOrder = (ingredientsId) => (dispatch) => {
     })
 
     postOrderData(ingredientsId)
-    .then(res => {
-        if (res && res.success) {
+        .then(res => {
             dispatch({
                 type: POST_ORDER_SUCCESS,
                 payload: res
-              })
-        } else {
+            })
+        })
+        .catch(() => {
             dispatch({
                 type: POST_ORDER_FAILED,
-              })
-        }
-    })
-    .catch(() => {
-        dispatch({
-            type: POST_ORDER_FAILED,
-          })
-    })
-    .finally(() => {
-        dispatch({
-            type: RESET_CONSTRUCTOR,
-          }) 
-    })
+            })
+        })
 };
+
+export const resetConstructor = () => ({
+    type: RESET_CONSTRUCTOR,
+});

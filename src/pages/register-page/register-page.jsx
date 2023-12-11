@@ -1,35 +1,32 @@
 import styles from "../../components/auth-page-wrapper/auth-page-wrapper.module.css";
 import AuthPageWrapper from "../../components/auth-page-wrapper/auth-page-wrapper";
-import { useState } from "react";
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from "react-router-dom";
 import { registrationUser } from "../../services/auth/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuthInfoPath } from "../../services/auth/selectors";
 import RequestMessage from "../../components/request-message/request-message";
+import { useForm } from "../../hooks/useForm";
 
 export const RegisterPage = () => {
   const dispatch = useDispatch();
+
   const { loading, error, message } = useSelector(getAuthInfoPath);
-  
-  const [form, setValue] = useState({ email: '', password: '', name: '' });
 
-  const { email, password, name } = form;
+  const { values, handleChange } = useForm({ email: '', password: '', name: '' });
 
-  const onChange = e => {
-    setValue({ ...form, [e.target.name]: e.target.value });
-  };
+  const { email, password, name } = values;
 
   const navigate = useNavigate();
 
   const goToLoginPage = () => {
     navigate('/login');
   };
-  
+
   const handleRegisterUser = (e) => {
     e.preventDefault();
     dispatch(registrationUser(email, password, name));
-};
+  };
 
   return (
     <AuthPageWrapper>
@@ -38,7 +35,7 @@ export const RegisterPage = () => {
         <Input
           type={'text'}
           placeholder={'Имя'}
-          onChange={onChange}
+          onChange={handleChange}
           value={name}
           name={'name'}
           error={false}
@@ -47,7 +44,7 @@ export const RegisterPage = () => {
           extraClass="mb-6"
         />
         <EmailInput
-          onChange={onChange}
+          onChange={handleChange}
           value={email}
           name={'email'}
           placeholder="E-mail"
@@ -55,7 +52,7 @@ export const RegisterPage = () => {
           extraClass="mb-6"
         />
         <PasswordInput
-          onChange={onChange}
+          onChange={handleChange}
           value={password}
           name={'password'}
           extraClass="mb-6"

@@ -1,10 +1,10 @@
 import styles from "./profile-page.module.css";
-import { useState } from "react";
 import { PasswordInput, Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from "react-redux";
 import { getAuthInfoPath } from "../../services/auth/selectors";
 import { changeUser } from "../../services/auth/actions";
 import { useDispatch } from "react-redux";
+import { useForm } from "../../hooks/useForm";
 
 export const ProfilePage = () => {
     const dispatch = useDispatch();
@@ -17,13 +17,9 @@ export const ProfilePage = () => {
         name: user.name,
     };
 
-    const [form, setValue] = useState(initialState);
+    const { values, setValues, handleChange } = useForm(initialState);
 
-    const { email, password, name } = form;
-
-    const onChange = e => {
-        setValue({ ...form, [e.target.name]: e.target.value });
-    };
+    const { email, password, name } = values;
 
     const handleUserDataChange = (e) => {
         e.preventDefault();
@@ -31,7 +27,7 @@ export const ProfilePage = () => {
     };
 
     const handleResetForm = () => {
-        setValue(initialState);
+        setValues(initialState);
     };
 
     return (
@@ -39,7 +35,7 @@ export const ProfilePage = () => {
             <Input
                 type={'text'}
                 placeholder={'Имя'}
-                onChange={onChange}
+                onChange={handleChange}
                 value={name}
                 name={'name'}
                 error={false}
@@ -48,7 +44,7 @@ export const ProfilePage = () => {
                 extraClass="mb-6"
             />
             <EmailInput
-                onChange={onChange}
+                onChange={handleChange}
                 value={email}
                 name={'email'}
                 placeholder="E-mail"
@@ -56,7 +52,7 @@ export const ProfilePage = () => {
                 extraClass="mb-6"
             />
             <PasswordInput
-                onChange={onChange}
+                onChange={handleChange}
                 value={password}
                 name={'password'}
                 extraClass="mb-6"

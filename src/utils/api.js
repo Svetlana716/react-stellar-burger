@@ -5,24 +5,28 @@ const config = {
   }
 };
 
-// проверка ошибок
-export function checkReject (err) { 
-  console.error(`Ошибка: ${err}`); 
-} 
-// проверка ответа
+//функция проверки ответа на `ok`
 const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
+//функция проверки на `success`
+const checkSuccess = (res) => {
+  return res && res.success ? res : Promise.reject(`Ответ не success: ${res}`);
+};
+
 // функция запроса с проверкой ответа
-const request = (url, options) => {
-  return fetch(url, options).then(checkResponse)
+const request = (endpoint, options) => {
+  //базовый урл сразу прописывается, чтобы не дублировать в каждом запросе
+  return fetch(`${config.baseUrl}${endpoint}`, options)
+    .then(checkResponse)
+    .then(checkSuccess);
 };
 
 //обновление токена
 
 export const refreshToken = () => {
-  return request(`${config.baseUrl}/auth/token`, {
+  return request("/auth/token", {
     method: "POST",
     headers: config.headers,
     body: JSON.stringify({
@@ -33,9 +37,9 @@ export const refreshToken = () => {
 
 //fetchWithRefresh используется в запросах получения и обновления данных пользователя.
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (endpoint, options) => {
   try {
-    const res = await fetch(url, options);
+    const res = await fetch(`${config.baseUrl}${endpoint}`, options);
     return await checkResponse(res);
   } catch (err) {
     if (err.message === "jwt expired") {
@@ -46,7 +50,7 @@ export const fetchWithRefresh = async (url, options) => {
       localStorage.setItem("refreshToken", refreshData.refreshToken);
       localStorage.setItem("accessToken", refreshData.accessToken);
       options.headers.authorization = refreshData.accessToken;
-      const res = await fetch(url, options); //повторяем запрос
+      const res = await fetch(`${config.baseUrl}${endpoint}`, options); //повторяем запрос
       return await checkResponse(res);
     } else {
       return Promise.reject(err);
@@ -57,7 +61,7 @@ export const fetchWithRefresh = async (url, options) => {
 //регистрация пользователя
 
 export const registerUser = (email, password, name) => {
-  return request(`${config.baseUrl}/auth/register`, {
+  return request("/auth/register", {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({
@@ -70,16 +74,12 @@ export const registerUser = (email, password, name) => {
 
 // получение списка ингридиентов
 
-export const getIngredientsData = () => {
-  return request(`${config.baseUrl}/ingredients`, {
-    headers: config.headers,
-  })
-};
+export const getIngredientsData = () => request("/ingredients");
 
 //получение информации о пользователе
 
 export const getUserInfo = () => {
-  return fetchWithRefresh(`${config.baseUrl}/auth/user`, {
+  return fetchWithRefresh("/auth/user", {
     headers: {
       ...config.headers,
       authorization: localStorage.getItem('accessToken'),
@@ -90,7 +90,7 @@ export const getUserInfo = () => {
 //изменение информации о пользователе
 
 export const changeUserInfo = (email, name) => {
-  return fetchWithRefresh(`${config.baseUrl}/auth/user`, {
+  return fetchWithRefresh("/auth/user", {
     method: 'PATCH',
     headers: {
       ...config.headers,
@@ -106,7 +106,7 @@ export const changeUserInfo = (email, name) => {
 //создание заказа
 
 export const postOrderData = (constructorIngredients) => {
-  return fetchWithRefresh(`${config.baseUrl}/orders`, {
+  return fetchWithRefresh("/orders", {
     method: 'POST',
     headers: {
       ...config.headers,
@@ -121,7 +121,7 @@ export const postOrderData = (constructorIngredients) => {
 //сброс пароля
 
 export const resetPasswordFirstStep = (email) => {
-  return request(`${config.baseUrl}/password-reset`, {
+  return request("/password-reset", {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({
@@ -131,7 +131,7 @@ export const resetPasswordFirstStep = (email) => {
 };
 
 export const resetPasswordSecondStep = (password, token) => {
-  return request(`${config.baseUrl}/password-reset/reset`, {
+  return request("/password-reset/reset", {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({
@@ -146,7 +146,7 @@ export const resetPasswordSecondStep = (password, token) => {
 //авторизация по логину и паролю
 
 export const login = (email, password) => {
-  return request(`${config.baseUrl}/auth/login`, {
+  return request("/auth/login", {
     method: "POST",
     headers: config.headers,
     body: JSON.stringify({
@@ -159,7 +159,7 @@ export const login = (email, password) => {
 //выход из профиля
 
 export const logout = () => {
-  return request(`${config.baseUrl}/auth/logout`, {
+  return request("/auth/logout", {
     method: "POST",
     headers: config.headers,
     body: JSON.stringify({
@@ -167,9 +167,3 @@ export const logout = () => {
     }),
   })
 };
-
-
-
-
-
-

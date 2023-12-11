@@ -1,24 +1,21 @@
 import styles from "../../components/auth-page-wrapper/auth-page-wrapper.module.css";
 import AuthPageWrapper from "../../components/auth-page-wrapper/auth-page-wrapper";
-import { useState } from "react";
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from "react-router-dom";
 import { loginToProfile } from "../../services/auth/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuthInfoPath } from "../../services/auth/selectors";
 import RequestMessage from "../../components/request-message/request-message";
+import { useForm } from "../../hooks/useForm";
 
 const LoginPage = () => {
     const dispatch = useDispatch();
+
     const { loading, error, message } = useSelector(getAuthInfoPath);
 
-    const [form, setValue] = useState({ email: '', password: '' });
+    const { values, handleChange } = useForm({ email: '', password: '' });
 
-    const { email, password } = form;
-
-    const onChange = e => {
-        setValue({ ...form, [e.target.name]: e.target.value });
-    };
+    const { email, password } = values;
 
     const navigate = useNavigate();
 
@@ -40,7 +37,7 @@ const LoginPage = () => {
             <form className={styles.form} onSubmit={handleLogin}>
                 <h2 className="text text_type_main-medium mb-6">Вход</h2>
                 <EmailInput
-                    onChange={onChange}
+                    onChange={handleChange}
                     value={email}
                     name={'email'}
                     placeholder="E-mail"
@@ -48,7 +45,7 @@ const LoginPage = () => {
                     extraClass="mb-6"
                 />
                 <PasswordInput
-                    onChange={onChange}
+                    onChange={handleChange}
                     value={password}
                     name={'password'}
                     extraClass="mb-6"
