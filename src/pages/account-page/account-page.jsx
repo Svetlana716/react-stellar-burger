@@ -10,6 +10,7 @@ export const AccountPage = () => {
     const { loading } = useSelector(getAuthInfoPath);
 
     const dispatch = useDispatch();
+
     const handleLogout = () => {
         dispatch(logoutOfProfile());
     };

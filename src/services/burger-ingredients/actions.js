@@ -7,7 +7,7 @@ export const GET_INGREDIENTS_FAILED = 'GET_ITEMS_FAILED';
 export const SET_CURRENT_TAB = 'SET_CURRENT_TAB';
 
 export const setCurrentTab = (tab) => ({
-    type: SET_CURRENT_TAB, 
+    type: SET_CURRENT_TAB,
     payload: tab,
 });
 
@@ -18,21 +18,15 @@ export const getIngredients = () => (dispatch) => {
     })
 
     getIngredientsData()
-    .then(res => {
-        if (res && res.success) {
+        .then((res) => {
             dispatch({
                 type: GET_INGREDIENTS_SUCCESS,
                 payload: res.data
-              })
-        } else {
+            })
+        })
+        .catch(() => {
             dispatch({
                 type: GET_INGREDIENTS_FAILED,
-              })
-        }
-    })
-    .catch(() => {
-        dispatch({
-            type: GET_INGREDIENTS_FAILED,
-          })
-    })
+            })
+        })
 };

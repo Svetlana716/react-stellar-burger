@@ -2,13 +2,14 @@ import {
   SET_USER_SUCCESS,
   SET_USER_REQUEST,
   SET_USER_FAILED,
+  RESET_USER,
 
   SET_AUTH_CHECKED,
 } from './actions';
 
 const initialState = {
   user: null,
-  
+
   isAuthChecked: false,
   message: '',
   success: false,
@@ -32,7 +33,7 @@ export const authReducer = (state = initialState, action) => {
           email: action.payload.user.email,
           password: action.payload.user.password,
           name: action.payload.user.name,
-      },
+        },
         success: action.payload.success,
         loading: false,
       }
@@ -44,6 +45,14 @@ export const authReducer = (state = initialState, action) => {
         error: true,
         loading: false,
         message: action.payload.message,
+      }
+
+    case RESET_USER:
+      return {
+        ...state,
+        user: null,
+        success: true,
+        loading: false,
       }
 
     case SET_AUTH_CHECKED:

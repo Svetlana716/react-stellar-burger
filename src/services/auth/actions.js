@@ -3,6 +3,7 @@ import { getUserInfo, changeUserInfo, login, logout, registerUser } from "../../
 export const SET_USER_REQUEST = 'SET_USER_REQUEST';
 export const SET_USER_SUCCESS = 'SET_USER_SUCCESS';
 export const SET_USER_FAILED = 'SET_USER_FAILED';
+export const RESET_USER = 'RESET_USER';
 
 export const SET_AUTH_CHECKED = "SET_AUTH_CHECKED";
 
@@ -16,8 +17,7 @@ const setUser = (user) => ({
     payload: user,
 });
 
-export const registrationUser = (email, password, name) =>
-    (dispatch) => {
+export const registrationUser = (email, password, name) => (dispatch) => {
         dispatch({
             type: SET_USER_REQUEST,
         });
@@ -34,15 +34,15 @@ export const registrationUser = (email, password, name) =>
                     payload: res,
                 })
             })
-            .finally(
-                dispatch(setAuthChecked(true))
-            )
+            .finally(() => {
+                dispatch(setAuthChecked(true));
+              });
     };
 
 export const getUser = () => (dispatch) => {
     dispatch({
         type: SET_USER_REQUEST,
-    })
+    });
 
     return getUserInfo()
         .then((res) => {
@@ -54,9 +54,9 @@ export const getUser = () => (dispatch) => {
                 payload: res,
             })
         })
-        .finally(
-            dispatch(setAuthChecked(true))
-        )
+        .finally(() => {
+            dispatch(setAuthChecked(true));
+          });
 };
 
 export const changeUser = (email, name) => (dispatch) => {
@@ -74,15 +74,16 @@ export const changeUser = (email, name) => (dispatch) => {
                 payload: res,
             })
         })
-        .finally(
-            dispatch(setAuthChecked(true))
-        )
+        .finally(() => {
+            dispatch(setAuthChecked(true));
+          });
 };
 
 export const loginToProfile = (email, password) => (dispatch) => {
     dispatch({
         type: SET_USER_REQUEST,
-    })
+    });
+
     login(email, password)
         .then((res) => {
             localStorage.setItem("accessToken", res.accessToken);
@@ -95,20 +96,23 @@ export const loginToProfile = (email, password) => (dispatch) => {
                 payload: res,
             })
         })
-        .finally(
-            dispatch(setAuthChecked(true))
-        )
+        .finally(() => {
+            dispatch(setAuthChecked(true));
+          });
 };
 
 export const logoutOfProfile = () => (dispatch) => {
     dispatch({
         type: SET_USER_REQUEST,
-    })
-    logout()
+    });
+
+    return logout()
         .then(() => {
+            dispatch({
+                type: RESET_USER,
+            });
             localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
-            dispatch(setUser(null))
         })
         .catch((res) => {
             dispatch({
@@ -122,9 +126,12 @@ export const checkUserAuth = () => (dispatch) => {
     if (localStorage.getItem("accessToken")) {
         dispatch(getUser())
             .catch(() => {
+                dispatch({
+                    type: RESET_USER,
+                });
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
-                dispatch(setUser(null))
+                
             })
             .finally(() => dispatch(setAuthChecked(true)));
     } else {

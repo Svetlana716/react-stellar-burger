@@ -141,8 +141,6 @@ export const resetPasswordSecondStep = (password, token) => {
   });
 };
 
-
-
 //авторизация по логину и паролю
 
 export const login = (email, password) => {
