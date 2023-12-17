@@ -1,48 +1,51 @@
-import { useState, useMemo } from "react";
-import PropTypes from "prop-types";
-import { ingredientPropType } from "../../../utils/prop-types";
+import { useModal } from "../../../hooks/useModal";
 import styles from "./burger-order.module.css";
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../../modal/modal";
-import OrderDetails from "./order-details/order-details"
+import OrderDetails from "./order-details/order-details";
+import { useDispatch, useSelector } from "react-redux";
+import { getConstructorIngredientsPath } from '../../../services/burger-constructor/selectors';
+// thunk для запроса данных с сервера
+import { postOrder } from '../../../services/order-details/actions';
 
-const BurgerOrder = ({ ingredients }) => {
+const BurgerOrder = () => {
+    const dispatch = useDispatch(); 
 
-    const [modalVisible, setModalVisible] = useState(false);
+    const { bun, otherIngredients, totalPrice } = useSelector(getConstructorIngredientsPath);
 
-    const handleOpenModal = () => {
-        setModalVisible(true);
+    const { isModalOpen, closeModal, openModal } = useModal();
+
+    //функция, создающая массив из id ингридиентов для post запроса 
+    const getIngredientsId = () => {
+        if (bun !== null) {
+            const bunId = bun._id;
+            const otherIngredientsId = otherIngredients.map(item => item._id);
+            return [bunId, ...otherIngredientsId, bunId]
+        }
     };
-
-    const handleCloseModal = () => {
-        setModalVisible(false);
+    
+    const handleMakeOrder = () => {
+        dispatch(postOrder(getIngredientsId()));
+        openModal();
     };
-    // стоимость корзины
-    const total = useMemo(
-        () =>
-        ingredients.reduce((acc, ingredient) => acc + ingredient.price, 0),
-        [ingredients]
-    );
-
+    
     return (
         <section className={`${styles.burgerOrder}`}>
             <div className={`${styles.orderContainer}`}>
-                <span className="text text_type_digits-medium">{total}</span>
+                <span className="text text_type_digits-medium">{totalPrice}</span>
                 <CurrencyIcon type="primary" />
             </div>
-            <Button onClick={handleOpenModal} htmlType="button" type="primary" size="large">
-                Оформить заказ
-            </Button>
-            {modalVisible && 
-                <Modal onClose={handleCloseModal}>
+            {!bun && <Button disabled htmlType="button" type="primary" size="large">
+                Оформить заказ</Button>}
+            {bun && <Button onClick={handleMakeOrder} htmlType="button" type="primary" size="large">
+                Оформить заказ</Button>}
+            
+            {isModalOpen && 
+                <Modal onClose={closeModal}>
                     <OrderDetails />
                 </Modal>}
         </section>
     );
-};
-
-BurgerOrder.propTypes = {
-    ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };
 
 export default BurgerOrder;

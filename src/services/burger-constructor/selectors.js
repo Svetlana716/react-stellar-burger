@@ -1,0 +1,1 @@
+export const getConstructorIngredientsPath = store => store.burgerConstructor;

@@ -1,41 +1,46 @@
-import { useState, useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
+import { useModal } from "../../../hooks/useModal"
 import PropTypes from "prop-types";
 import { ingredientPropType } from "../../../utils/prop-types";
 import styles from "./ingredient-type.module.css";
 import IngredientItem from "../ingredient-item/ingredient-item";
 import Modal from "../../modal/modal";
-import IngredientDetails from "./ingredient-details/ingredient-details"
+import IngredientDetails from "./ingredient-details/ingredient-details";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentIngredient, unsetCurrentIngredient } from '../../../services/ingredient-details/actions';
+import { getConstructorIngredientsPath } from '../../../services/burger-constructor/selectors';
+import { getIngredientDetailsPath } from '../../../services/ingredient-details/selectors';
 
 const IngredientType = ({ title, ingredientType }) => {
-  // стейт компонента
-  const [modalVisible, setModalVisible] = useState(false);
-  const [currentIngredient, setCurrentIngredient] = useState(null);
+  const {bun, otherIngredients} = useSelector(getConstructorIngredientsPath);
+  const { currentIngredient } = useSelector(getIngredientDetailsPath);
+  const dispatch = useDispatch();
+  const { isModalOpen, openModal, closeModal } = useModal();
 
-  // обработчики событий(изменение стейта)
-  const handleOpenModal = useCallback ((item) => {
-    setCurrentIngredient(item);
-    setModalVisible(true);
+  //функции для счетчика ингридиента
+  const bunCounter = (ingredient) => {
+    if (bun !== null) {
+      return bun._id === ingredient._id ? 2 : 0;
+    }
+  };
+
+  const ingredientCounter = (ingredient) => {
+    const otherIngredientsList = otherIngredients.filter(item => item.name === ingredient.name);
+      return otherIngredientsList.length;
+  };
+
+
+  // обработчики открытия/закрытия модалок с изменением стора
+  const handleOpenModal = useCallback ((ingredient) => {
+    dispatch(setCurrentIngredient(ingredient))
+    openModal()
   }, []);
 
   const handleCloseModal = useCallback (() => {
-    setModalVisible(false);
+    dispatch(unsetCurrentIngredient())
+    closeModal()
   }, []);
-
-  // колличество конкретного ингридиента(для счетчика ингридиента)
-  const ingredientCount = useMemo(
-    () =>
-      ingredientType.reduce(function (prevVal, item) {
-        if (!prevVal[item]) {
-          prevVal[item] = 1;
-        } else {
-          prevVal[item] += 1;
-        }
-
-        return prevVal;
-      }, {}),
-    [ingredientType]
-  );
-
+  
   return (
     <section>
       <h2 className="text text_type_main-medium">{title}</h2>
@@ -43,12 +48,12 @@ const IngredientType = ({ title, ingredientType }) => {
         {ingredientType.map(ingredient => {
           return (
             <li onClick={() => handleOpenModal(ingredient)} key={ingredient._id} className={`${styles.listItem}`}>
-              <IngredientItem ingredient={ingredient} count={ingredientCount.prevVal} />
+              <IngredientItem ingredient={ingredient} count={ingredient.type === 'bun' ? bunCounter(ingredient) : ingredientCounter(ingredient)} />
             </li>
           )
         })}
       </ul>
-      {modalVisible && currentIngredient &&
+      {isModalOpen && currentIngredient &&
         <Modal onClose={handleCloseModal}>
           <IngredientDetails ingredient={currentIngredient} />
         </Modal>}
