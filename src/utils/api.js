@@ -87,6 +87,10 @@ export const getUserInfo = () => {
   })
 };
 
+//получение информации о заказе
+
+export const getOrderData = (number) => request(`/orders/${number}`);
+
 //изменение информации о пользователе
 
 export const changeUserInfo = (email, name) => {

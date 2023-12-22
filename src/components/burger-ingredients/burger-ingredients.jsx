@@ -87,7 +87,7 @@ const BurgerIngredients = () => {
                     Начинки
                 </Tab>
             </div>
-            <ul className={`${styles.ingredientsContainer} custom-scroll`}>
+            <ul className={styles.ingredientsContainer}>
                 <li ref={bunRef}>
                     <IngredientType 
                         title='Булки' 

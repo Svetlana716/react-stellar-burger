@@ -7,14 +7,14 @@ import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-comp
 import { addBun } from "../../../../services/burger-constructor/actions";
 
 
-const BunElement = ({type}) => {
-const { bun } = useSelector(getConstructorIngredientsPath);
+const BunElement = ({ type }) => {
+  const { bun } = useSelector(getConstructorIngredientsPath);
   const dispatch = useDispatch();
 
-  const [{ opacity }, dropRef ] = useDrop({
+  const [{ opacity }, dropRef] = useDrop({
     accept: "bun",
     collect: monitor => ({
-        opacity: monitor.isOver() ? 0.5 : 1,
+      opacity: monitor.isOver() ? 0.5 : 1,
     }),
     drop(item) {
       dispatch(addBun(item));
@@ -25,12 +25,14 @@ const { bun } = useSelector(getConstructorIngredientsPath);
     <div ref={dropRef} style={{ opacity }}>
       {
         bun ?
-        (<ConstructorElement 
-            type={type} 
-            isLocked={true} 
-            text={`${bun.name} ${type === 'top' ? '(верх)' : '(низ)'}`} 
-            price={bun.price} 
-            thumbnail={bun.image} />) : (<DropTarget type={type} />)
+          (<ConstructorElement
+            type={type}
+            isLocked={true}
+            text={`${bun.name} ${type === 'top' ? '(верх)' : '(низ)'}`}
+            price={bun.price}
+            thumbnail={bun.image} />)
+          :
+          (<DropTarget type={type} />)
       }
     </div>
   );
@@ -38,6 +40,6 @@ const { bun } = useSelector(getConstructorIngredientsPath);
 
 BunElement.propTypes = {
   type: PropTypes.string.isRequired
-  }
+}
 
 export default BunElement;

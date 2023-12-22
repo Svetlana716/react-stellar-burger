@@ -5,9 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { getAuthInfoPath } from "../../services/auth/selectors";
 import RequestMessage from "../../components/request-message/request-message";
+import { useLocation } from "react-router-dom";
 
 export const AccountPage = () => {
     const { loading } = useSelector(getAuthInfoPath);
+
+    const location = useLocation();
+    
+    const paragraphContent = location.pathname === '/profile/orders' ? 'В этом разделе вы можете просмотреть свою историю заказов' : 'В этом разделе вы можете изменить свои персональные данные';
 
     const dispatch = useDispatch();
 
@@ -32,7 +37,7 @@ export const AccountPage = () => {
                     </ul>
                 </nav>
                 {loading && <RequestMessage message='Загрузка...' />}
-                <p className={styles.paragraph}>В этом разделе вы можете изменить свои персональные данные</p>
+                <p className={styles.paragraph}>{paragraphContent}</p>
             </div>
 
             <div className={styles.contentContainer}>

@@ -7,7 +7,6 @@ const IngredientDetails = () => {
 
     const { allIngredients } = useSelector(getIngredientsPath);
     const { ingredientId } = useParams();
-    console.log(allIngredients);
 
     const getIngredientById = (id) => {
         return allIngredients.find((ingredient) => ingredient._id === id);

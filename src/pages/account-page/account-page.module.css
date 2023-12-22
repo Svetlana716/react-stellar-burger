@@ -1,17 +1,19 @@
 .accountContainer {
-    display: flex;
-
-    column-gap: 60px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    align-items: center;
     width: 1240px;
+    column-gap: 60px;
+    height: 100vh;
 }
 
 .menuContainer {
     max-width: 320px;
-    flex-grow: 2;
+    grid-column: 1/2;
 }
 
 .contentContainer {
-    flex-grow: 3;
+    grid-column: 2/3;
 }
 
 .menu {

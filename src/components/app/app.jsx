@@ -1,4 +1,7 @@
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getIngredients } from '../../services/burger-ingredients/actions';
 //обертка для всех страниц с шапкой и общими стилями
 import PageWrapper from "../../components/page-wrapper/page-wrapper";
 //pages
@@ -9,13 +12,13 @@ import ForgotPasswordPage from "../../pages/forgot-password-page/forgot-password
 import ResetPasswordPage from "../../pages/reset-password-page/reset-password-page";
 import ProfilePage from "../../pages/profile-page/profile-page";
 import AccountPage from "../../pages/account-page/account-page";
+import FeedPage from "../../pages/feed-page/feed-page";
+import OrdersPage from "../../pages/orders-page/orders-page";
 import NotFoundPage from "../../pages/not-found-page/not-found-page";
 //для модалки
-import IngredientDetails from '../../components/burger-ingredients/ingredient-type/ingredient-details/ingredient-details';
-import Modal from "../../components/modal/modal";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getIngredients } from '../../services/burger-ingredients/actions';
+import Modal from "../modal/modal";
+import IngredientDetails from "../burger-ingredients/ingredient-type/ingredient-details/ingredient-details";
+import OrderFeedDetails from "../order-feed-details/order-feed-details";
 //для защищенного роутинга
 import { checkUserAuth } from '../../services/auth/actions';
 import { OnlyAuth, OnlyUnAuth } from "../protected-route/protected-route";
@@ -48,11 +51,13 @@ const App = () => {
         <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage/>} />} />
         <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPasswordPage/>} />} />
 
+        <Route path="/feed" element={<FeedPage/>} />
+        <Route path="/feed/:number" element={<OrderFeedDetails />} />
+
         <Route path="/profile" element={<OnlyAuth component={<AccountPage/>} />}>
           <Route index element={<OnlyAuth component={<ProfilePage/>} />} />
-          <Route path="orders" element={<p>OrdersPage</p>}>
-            <Route path=":number" element={<p>OrderPage</p>} />
-          </Route>
+          <Route path="orders" element={<OnlyAuth component={<OrdersPage/>} />} />
+          <Route path="orders/:number" element={<OnlyAuth component={<OrderFeedDetails/>} />} />
         </Route>
         
         <Route path="*" element={<NotFoundPage />} />
@@ -65,6 +70,22 @@ const App = () => {
 	          element={
 	            <Modal onClose={handleModalClose}>
 	              <IngredientDetails />
+	            </Modal>
+	          }
+	        />
+          <Route
+	          path="/feed/:number"
+	          element={
+	            <Modal onClose={handleModalClose}>
+	              <OrderFeedDetails />
+	            </Modal>
+	          }
+	        />
+          <Route 
+	          path="/profile/orders/:number"
+	          element={
+	            <Modal onClose={handleModalClose}>
+	              <OrderFeedDetails />
 	            </Modal>
 	          }
 	        />

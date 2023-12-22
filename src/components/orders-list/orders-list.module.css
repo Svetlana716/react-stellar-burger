@@ -1,14 +1,17 @@
-.typeList {
+.ordersList {
+    composes: custom-scroll from global;
+    max-height: 100vh;
+    overflow-y: scroll;
     display: flex;
-    column-gap: 24px;
-    flex-wrap: wrap;
-    margin: 0;
-    composes: pl-4 pr-4 from global;
+    flex-direction: column;
+    row-gap: 16px;
 }
 
 .link {
     color: #F2F2F3;
     text-decoration: none;
+    composes: pl-2 pr-2 from global;
+    box-sizing: content-box;
 }
 
 .link:hover {

@@ -1,0 +1,5 @@
+.feedContainer {
+    display: flex;
+    column-gap: 60px;
+    composes: pt-10 from global;
+}

@@ -19,7 +19,7 @@ const AppHeader = () => {
             </NavLink>
           </li>
           <li className={styles.menuItem}>
-            <NavLink to="/page" className={styles.menuLink}>
+            <NavLink to="/feed" className={styles.menuLink}>
             {({ isActive }) => (
                 <>
                   <ListIcon type={isActive ? 'primary' : 'secondary'} />

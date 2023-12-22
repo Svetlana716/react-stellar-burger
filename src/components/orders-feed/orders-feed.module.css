@@ -1,0 +1,8 @@
+.ordersFeedContainer {
+    max-width: 600px;
+}
+
+.feedTitle {
+    composes: mb-5 from global;
+    composes: text text_type_main-large from global;
+}
