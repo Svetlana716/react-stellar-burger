@@ -1,6 +1,6 @@
 import styles from "./order-ingredients.module.css";
 import PropTypes from "prop-types";
-import { orderPropType } from "../../../utils/prop-types";
+import { ingredientPropType } from "../../../utils/prop-types";
 
 export const OrderIngredients = ({ orderIngredients }) => {
 
@@ -23,7 +23,7 @@ export const OrderIngredients = ({ orderIngredients }) => {
 };
 
 OrderIngredients.propTypes = {
-    orderIngredients: PropTypes.arrayOf(orderPropType).isRequired,
+    orderIngredients: PropTypes.arrayOf(ingredientPropType).isRequired,
 };
 
 export default OrderIngredients;

@@ -8,7 +8,6 @@ import { useLocation } from "react-router-dom";
 
 export const OrderItem = ({ order }) => {
     
-
     const { createdAt, ingredients, name, number, status } = order;
 
     const { allIngredients } = useSelector(getIngredientsPath);
@@ -49,14 +48,6 @@ export const OrderItem = ({ order }) => {
     const style = status === 'done' ? `${styles.doneStatus} ${styles.status}` : styles.status;
 
     const orderStatus = location.pathname.startsWith('/profile/orders') ? <p className={style}>{content}</p> : null;
-
-    //проверка на валидность данных ингридиентов
-
-    const check = ingredients.find(ingredient => ingredient === null || undefined);
-
-    if (check) {
-        return null;
-    }
 
     return (
         <div className={styles.orderContainer}>

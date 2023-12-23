@@ -5,11 +5,17 @@ import { getTotalOrderFeedPath } from "../../services/total-order-feed/selectors
 
 export const OrdersFeed = () => {
     const { totalOrders } = useSelector(getTotalOrderFeedPath);
-    
+
+    //проверка на валидность данных ингридиентов
+    const isNull = (value) => {
+        return value.some(item => item === null || undefined)
+    };
+    const checkOrdersArray = totalOrders?.filter(order => !isNull(order?.ingredients));
+
     return (
         <section className={styles.ordersFeedContainer}>
             <h2 className={styles.feedTitle}>Лента заказов</h2>
-            <OrdersList orders={totalOrders} linkPath={'/feed'}/>
+            <OrdersList orders={checkOrdersArray} linkPath={'/feed'} />
         </section>
     );
 };

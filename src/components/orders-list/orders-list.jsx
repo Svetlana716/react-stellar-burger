@@ -5,16 +5,16 @@ import OrderItem from "../order-item/order-item";
 import { Link, useLocation } from "react-router-dom";
 
 export const OrdersList = ({ orders, linkPath }) => {
-    
+   
     const location = useLocation();
 
     const reversedOrders = [...orders].reverse();
 
     const ordersArray = location.pathname === '/profile/orders' ? reversedOrders : orders;
-    
+
     return (
-            <div className={styles.ordersList}>
-                {
+        <div className={styles.ordersList}>
+            {
                 ordersArray.map(order => {
                     return (
                         <Link
@@ -27,8 +27,8 @@ export const OrdersList = ({ orders, linkPath }) => {
                         </Link>
                     )
                 })
-                }
-            </div>
+            }
+        </div>
     );
 };
 

@@ -37,12 +37,12 @@ export const socketMiddleware = (wsActions) => {
                 socket.onmessage = (event) => {
                     const { data } = event;
                     const parsedData = JSON.parse(data);
-/* 
+
                     if (data?.message === 'Invalid or missing token') {
                         refreshToken().then((res) => {
                             dispatch({ type: wsConnect, payload: res });
                         })
-                    } */
+                    }
                     dispatch({ type: onMessage, payload: parsedData });
                 };
 
