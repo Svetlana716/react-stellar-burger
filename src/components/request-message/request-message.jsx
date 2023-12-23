@@ -1,9 +1,11 @@
 import styles from "./request-message.module.css";
 import PropTypes from "prop-types";
 
-const RequestMessage = ({message}) => {
+const RequestMessage = ({message, error}) => {
+    const style = error ? styles.error : styles.message;
+
     return (
-        <p className={`${styles.message} text text_type_main-large`}>{message}</p>
+        <p className={style}>{message}</p>
     );
 };
 

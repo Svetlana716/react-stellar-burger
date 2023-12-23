@@ -1,0 +1,53 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.orderNumber {
+    composes: text text_type_digits-default from global;
+    composes: mb-10 from global;
+}
+
+.orderTitle {
+    composes: text text_type_main-medium from global;
+    composes: mb-3 from global;
+}
+
+.orderStatus {
+    composes: text text_type_main-default from global;
+    color: #00CCCC;
+    composes: mb-15 from global;
+}
+
+.orderSubtitle {
+    composes: text text_type_main-medium from global;
+    composes: mb-6 from global;
+}
+
+.ingredientsList {
+    composes: custom-scroll from global;
+    max-height: 40vh;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    padding: 0;
+    margin: 0;
+}
+
+.dateAndPriceContainer {
+    display: flex;
+    justify-content: space-between;
+    composes: mt-10 from global;
+}
+
+.priceContainer {
+    display: flex;
+    column-gap: 9px;
+    composes: text text_type_digits-default from global;
+}
+
+.date {
+    composes: text text_type_main-default text_color_inactive from global;
+}

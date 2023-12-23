@@ -1,0 +1,26 @@
+.authContainer {
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.linkContainer {
+  display: inline-flex;
+  column-gap: 8px;
+  composes: mb-4 from global; 
+}
+
+.linkContainer:last-child {
+  margin: 0;
+}
+
+.button {
+  padding: 0;
+}

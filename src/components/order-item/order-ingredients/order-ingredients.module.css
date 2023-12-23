@@ -1,0 +1,41 @@
+.ingredientsList {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    transform: scale(-1);
+}
+
+.ingredientItem {
+    width: 64px;
+    height: 64px;
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #131316;
+    border: 2px solid #4C4CFF;
+    margin-left: -15px;
+    transform: scale(-1);
+}
+
+.ingredientItem:first-child {
+    margin: 0;
+}
+
+.lastIngredientImage {
+    opacity: 0.6;
+}
+
+.ingredientImage {
+    width: 112px;
+    height: 56px;
+}
+
+.ingredientsCounter{
+    composes: text text_type_main-default from global;
+    position: absolute;
+    top: 19px;
+    left: 19px;
+    z-index: 2;
+}
