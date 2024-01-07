@@ -1,48 +1,55 @@
-import { compose, createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { rootReducer } from './root-reducer';
+import { configureStore } from '@reduxjs/toolkit';
+import { ingredientsReducer } from './burger-ingredients/reducer';
+import { constructorReducer } from './burger-constructor/reducer';
+import { orderReducer } from './order-details/reducer';
+import { userReducer } from './user/reducer';
+import { totalOrderFeedReducer } from './total-order-feed/reducer';
+import { profileOrderFeedReducer } from './profile-order-feed/reducer';
 import { socketMiddleware } from './middleware/socket-middleware';
 import {
-  WS_TOTAL_ORDER_FEED_CONNECT,
-  WS_TOTAL_ORDER_FEED_DISCONNECT,
-  WS_TOTAL_ORDER_FEED_CONNECTION_SUCCESS,
-  WS_TOTAL_ORDER_FEED_CONNECTION_CLOSED,
-  WS_TOTAL_ORDER_FEED_CONNECTION_ERROR,
-  WS_TOTAL_ORDER_FEED_GET_MESSAGE,
+  totalOrderFeedConnect,
+  totalOrderFeedDisconnect,
+  wsTotalOrderFeedOpen,
+  wsTotalOrderFeedClose,
+  wsTotalOrderFeedError,
+  wsTotalOrderFeedMessage,
 } from "./total-order-feed/actions";
 
 import {
-  WS_PROFILE_ORDER_FEED_CONNECT,
-  WS_PROFILE_ORDER_FEED_DISCONNECT,
-  WS_PROFILE_ORDER_FEED_CONNECTION_SUCCESS,
-  WS_PROFILE_ORDER_FEED_CONNECTION_CLOSED,
-  WS_PROFILE_ORDER_FEED_CONNECTION_ERROR,
-  WS_PROFILE_ORDER_FEED_GET_MESSAGE,
+  profileOrderFeedConnect,
+  profileOrderFeedDisconnect,
+  wsProfileOrderFeedOpen,
+  wsProfileOrderFeedClose,
+  wsProfileOrderFeedError,
+  wsProfileOrderFeedMessage,
 } from "./profile-order-feed/actions";
 
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
-
 const totalOrderFeedMiddleware = socketMiddleware({
-  wsConnect: WS_TOTAL_ORDER_FEED_CONNECT,
-  wsDisconnect: WS_TOTAL_ORDER_FEED_DISCONNECT,
-  onOpen: WS_TOTAL_ORDER_FEED_CONNECTION_SUCCESS,
-  onClose: WS_TOTAL_ORDER_FEED_CONNECTION_CLOSED,
-  onError: WS_TOTAL_ORDER_FEED_CONNECTION_ERROR,
-  onMessage: WS_TOTAL_ORDER_FEED_GET_MESSAGE,
+  wsConnect: totalOrderFeedConnect,
+  wsDisconnect: totalOrderFeedDisconnect,
+  onOpen: wsTotalOrderFeedOpen,
+  onClose: wsTotalOrderFeedClose,
+  onError: wsTotalOrderFeedError,
+  onMessage: wsTotalOrderFeedMessage,
 });
 
 const profileOrderFeedMiddleware = socketMiddleware({
-  wsConnect: WS_PROFILE_ORDER_FEED_CONNECT,
-  wsDisconnect: WS_PROFILE_ORDER_FEED_DISCONNECT,
-  onOpen: WS_PROFILE_ORDER_FEED_CONNECTION_SUCCESS,
-  onClose: WS_PROFILE_ORDER_FEED_CONNECTION_CLOSED,
-  onError: WS_PROFILE_ORDER_FEED_CONNECTION_ERROR,
-  onMessage: WS_PROFILE_ORDER_FEED_GET_MESSAGE,
+  wsConnect: profileOrderFeedConnect,
+  wsDisconnect: profileOrderFeedDisconnect,
+  onOpen: wsProfileOrderFeedOpen,
+  onClose: wsProfileOrderFeedClose,
+  onError: wsProfileOrderFeedError,
+  onMessage: wsProfileOrderFeedMessage,
 });
 
-const enhancer = composeEnhancers(applyMiddleware(thunk, totalOrderFeedMiddleware, profileOrderFeedMiddleware));
-
-export const store = createStore(rootReducer, enhancer);
+export const store = configureStore({
+  reducer: {
+    ingredients: ingredientsReducer,
+    burgerConstructor: constructorReducer,
+    orderDetails: orderReducer,
+    user: userReducer,
+    totalOrderFeed: totalOrderFeedReducer,
+    profileOrderFeed: profileOrderFeedReducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(totalOrderFeedMiddleware, profileOrderFeedMiddleware),
+});

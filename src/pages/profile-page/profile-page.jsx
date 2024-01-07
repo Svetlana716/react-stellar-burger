@@ -1,15 +1,15 @@
 import styles from "./profile-page.module.css";
 import { PasswordInput, Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from "react-redux";
-import { getAuthInfoPath } from "../../services/auth/selectors";
-import { changeUser } from "../../services/auth/actions";
+import { getUserInfoPath } from "../../services/user/selectors";
+import { updateUser } from "../../services/user/actions";
 import { useDispatch } from "react-redux";
 import { useForm } from "../../hooks/useForm";
 
 export const ProfilePage = () => {
     const dispatch = useDispatch();
 
-    const { user } = useSelector(getAuthInfoPath);
+    const { user } = useSelector(getUserInfoPath);
 
     const initialState = {
         email: user.email,
@@ -23,7 +23,7 @@ export const ProfilePage = () => {
 
     const handleUserDataChange = (e) => {
         e.preventDefault();
-        dispatch(changeUser(email, name));
+        dispatch(updateUser(values));
     };
 
     const handleResetForm = () => {

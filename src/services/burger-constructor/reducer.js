@@ -1,54 +1,42 @@
-import {
-    ADD_BUN,
-    ADD_OTHER_INGREDIENT,
-    DELETE_OTHER_INGREDIENT,
-    RESET_CONSTRUCTOR,
-    CHANGE_THE_ORDER_OF_OTHER_INGREDIENTS,
-} from './actions';
+import { createSlice, nanoid } from '@reduxjs/toolkit';
 
-import update from 'immutability-helper';
-
-const initialState = {
-    bun: null,
-    otherIngredients: [],
-};
-
-export const constructorReducer = (state = initialState, action) => {
-    switch (action.type) {
-
-        case ADD_BUN:
-            return {
-                ...state,
-                bun: action.payload,
-            };
-
-        case ADD_OTHER_INGREDIENT:
-            return {
-                ...state,
-                otherIngredients: [...state.otherIngredients, action.payload],
+const constructorSlice = createSlice({
+    name: 'constructor',
+    initialState: {
+        bun: null,
+        otherIngredients: [],
+    },
+    reducers: {
+        addBun(state, action) {
+            state.bun = action.payload;
+        },
+        addOtherIngredient: {
+            reducer: (state, action) => {
+                state.otherIngredients.push(action.payload);
+            },
+            prepare: (otherIngredients) => {
+                return { payload: {...otherIngredients, uniqId: nanoid() }}
             }
-
-        case CHANGE_THE_ORDER_OF_OTHER_INGREDIENTS:
-            return {
-                ...state,
-                otherIngredients: update(state.otherIngredients, {
-                  $splice: [
-                    [action.payload.dragIndex, 1],
-                    [action.payload.hoverIndex, 0, state.otherIngredients[action.payload.dragIndex]],
-                  ],
-                }),
-              };
-
-        case DELETE_OTHER_INGREDIENT:
-            return {
-                ...state,
-                otherIngredients: state.otherIngredients.filter(ingredient => ingredient.uniqId !== action.payload.uniqId),
+        },
+        deleteOtherIngredient(state, action) {
+            state.otherIngredients = state.otherIngredients.filter(ingredient => ingredient.uniqId !== action.payload.uniqId)
+        },
+        changeTheOrderOfIngredients: {
+            reducer: (state, action) => {
+                const { dragIndex, hoverIndex } = action.payload;
+                state.otherIngredients.splice(hoverIndex, 0, state.otherIngredients.splice(dragIndex, 1)[0]);
+            },
+            prepare: (dragIndex, hoverIndex) => {
+                return { payload: { dragIndex: dragIndex, hoverIndex: hoverIndex }}
             }
+        },
+        resetConstructor(state) {
+            state.bun = null;
+            state.otherIngredients = [];
+        }
+    },
+});
 
-        case RESET_CONSTRUCTOR:
-            return initialState;
+export const constructorReducer = constructorSlice.reducer;
 
-        default:
-            return state;
-    }
-};
+export const { addBun, addOtherIngredient, deleteOtherIngredient, changeTheOrderOfIngredients, resetConstructor } = constructorSlice.actions;

@@ -1,17 +1,9 @@
-export const WS_PROFILE_ORDER_FEED_CONNECT = 'WS_PROFILE_ORDER_FEED_CONNECT';
-export const WS_PROFILE_ORDER_FEED_DISCONNECT = 'WS_PROFILE_ORDER_FEED_DISCONNECT';
+import { createAction } from '@reduxjs/toolkit';
 
-export const WS_PROFILE_ORDER_FEED_CONNECTION_SUCCESS = 'WS_PROFILE_ORDER_FEED_CONNECTION_SUCCESS'; 
-export const WS_PROFILE_ORDER_FEED_CONNECTION_ERROR = 'WS_PROFILE_ORDER_FEED_CONNECTION_ERROR';
-export const WS_PROFILE_ORDER_FEED_CONNECTION_CLOSED = 'WS_PROFILE_ORDER_FEED_CONNECTION_CLOSED';
+export const profileOrderFeedConnect = createAction('WS_PROFILE_ORDER_FEED_CONNECT');
+export const profileOrderFeedDisconnect = createAction('WS_PROFILE_ORDER_FEED_DISCONNECT');
 
-export const WS_PROFILE_ORDER_FEED_GET_MESSAGE = 'WS_PROFILE_ORDER_FEED_GET_MESSAGE';
-
-export const profileOrderFeedConnect = (url) => ({
-    type: WS_PROFILE_ORDER_FEED_CONNECT,
-    payload: url,
-});
-
-export const profileOrderFeedDisconnect = () => ({
-    type: WS_PROFILE_ORDER_FEED_DISCONNECT,
-});
+export const wsProfileOrderFeedOpen = createAction('WS_PROFILE_ORDER_FEED_CONNECTION_OPEN'); 
+export const wsProfileOrderFeedError = createAction('WS_PROFILE_ORDER_FEED_CONNECTION_ERROR');
+export const wsProfileOrderFeedClose = createAction('WS_PROFILE_ORDER_FEED_CONNECTION_CLOSE');
+export const wsProfileOrderFeedMessage = createAction('WS_PROFILE_ORDER_FEED_GET_MESSAGE');

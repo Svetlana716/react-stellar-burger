@@ -6,14 +6,14 @@ import { getOrderNumberPath } from '../../../../services/order-details/selectors
 import RequestMessage from "../../../request-message/request-message";
 
 const OrderDetails = () => {
-    const { name, loading, error, success } = useSelector(getOrderInfoPath);
+    const { name, loading, error } = useSelector(getOrderInfoPath);
     const { number } = useSelector(getOrderNumberPath);
 
     return (
         <div className={styles.wrapper}>
-            {loading && !success && <RequestMessage message={'Загрузка...'} />}
-            {error && !success && <RequestMessage message={'Произошла ошибка'} />}
-            {!loading && !error && success &&
+            {loading && <RequestMessage message={'Готовим ваш заказ...'} />}
+            {error && <RequestMessage message={'Произошла ошибка'} />}
+            {!loading && !error && 
                 <>
                     <p className={styles.orderNumber}>{number}</p>
                     <h3 className={styles.orderName}>{name}</h3>

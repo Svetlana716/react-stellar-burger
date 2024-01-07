@@ -19,12 +19,12 @@ export const FeedPage = () => {
         }
     }, []);
 
-    const { wsConnected, connectingError, errorMessage, totalOrders } = useSelector(getTotalOrderFeedPath);
+    const { wsConnected, connectingError, totalOrders } = useSelector(getTotalOrderFeedPath);
 
     return (
         <div className={styles.feedContainer}>
             {!wsConnected && <RequestMessage message={'Соединение устанавливается...'} />}
-            {connectingError && <RequestMessage message={errorMessage} />}
+            {connectingError && <RequestMessage message={connectingError.message} />}
             {wsConnected && !connectingError && totalOrders?.length > 0 && (
                 <>
                     <OrdersFeed />

@@ -2,16 +2,16 @@ import styles from "../../components/auth-page-wrapper/auth-page-wrapper.module.
 import AuthPageWrapper from "../../components/auth-page-wrapper/auth-page-wrapper";
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from "react-router-dom";
-import { registrationUser } from "../../services/auth/actions";
+import { registrationUser } from "../../services/user/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { getAuthInfoPath } from "../../services/auth/selectors";
+import { getUserInfoPath } from "../../services/user/selectors";
 import RequestMessage from "../../components/request-message/request-message";
 import { useForm } from "../../hooks/useForm";
 
 export const RegisterPage = () => {
   const dispatch = useDispatch();
 
-  const { loading, error, message } = useSelector(getAuthInfoPath);
+  const { loading, error } = useSelector(getUserInfoPath);
 
   const { values, handleChange } = useForm({ email: '', password: '', name: '' });
 
@@ -25,7 +25,7 @@ export const RegisterPage = () => {
 
   const handleRegisterUser = (e) => {
     e.preventDefault();
-    dispatch(registrationUser(email, password, name));
+    dispatch(registrationUser(values));
   };
 
   return (
@@ -58,7 +58,7 @@ export const RegisterPage = () => {
           extraClass="mb-6"
         />
         {loading && <RequestMessage message={'Загрузка...'} />}
-        {error && <RequestMessage error={error} message={message} />}
+        {error && <RequestMessage error={error} message={error.message} />}
 
         <Button htmlType="submit" type="primary" size="large" extraClass="mb-20">Зарегистрироваться</Button>
       </form>

@@ -24,7 +24,6 @@ const request = (endpoint, options) => {
 };
 
 //обновление токена
-
 export const refreshToken = () => {
   return request("/auth/token", {
     method: "POST",
@@ -36,7 +35,6 @@ export const refreshToken = () => {
 };
 
 //fetchWithRefresh используется в запросах получения и обновления данных пользователя.
-
 export const fetchWithRefresh = async (endpoint, options) => {
   try {
     const res = await fetch(`${config.baseUrl}${endpoint}`, options);
@@ -59,7 +57,6 @@ export const fetchWithRefresh = async (endpoint, options) => {
 };
 
 //регистрация пользователя
-
 export const registerUser = (email, password, name) => {
   return request("/auth/register", {
     method: 'POST',
@@ -73,11 +70,9 @@ export const registerUser = (email, password, name) => {
 };
 
 // получение списка ингридиентов
-
 export const getIngredientsData = () => request("/ingredients");
 
 //получение информации о пользователе
-
 export const getUserInfo = () => {
   return fetchWithRefresh("/auth/user", {
     headers: {
@@ -88,12 +83,10 @@ export const getUserInfo = () => {
 };
 
 //получение информации о заказе
-
 export const getOrderData = (number) => request(`/orders/${number}`);
 
 //изменение информации о пользователе
-
-export const changeUserInfo = (email, name) => {
+export const updateUserInfo = (email, name) => {
   return fetchWithRefresh("/auth/user", {
     method: 'PATCH',
     headers: {
@@ -108,7 +101,6 @@ export const changeUserInfo = (email, name) => {
 };
 
 //создание заказа
-
 export const postOrderData = (constructorIngredients) => {
   return fetchWithRefresh("/orders", {
     method: 'POST',
@@ -123,7 +115,6 @@ export const postOrderData = (constructorIngredients) => {
 };
 
 //сброс пароля
-
 export const resetPasswordFirstStep = (email) => {
   return request("/password-reset", {
     method: 'POST',
@@ -146,7 +137,6 @@ export const resetPasswordSecondStep = (password, token) => {
 };
 
 //авторизация по логину и паролю
-
 export const login = (email, password) => {
   return request("/auth/login", {
     method: "POST",
@@ -159,7 +149,6 @@ export const login = (email, password) => {
 };
 
 //выход из профиля
-
 export const logout = () => {
   return request("/auth/logout", {
     method: "POST",

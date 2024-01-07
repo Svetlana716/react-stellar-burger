@@ -4,15 +4,15 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from "./burger-ingredients.module.css";
 import IngredientType from "./ingredient-type/ingredient-type";
 import { useSelector, useDispatch } from "react-redux";
-import { setCurrentTab } from '../../services/burger-ingredients/actions';
+import { setCurrentTab } from '../../services/burger-ingredients/reducer';
 //путь до селектора
 import { getIngredientsPath } from "../../services/burger-ingredients/selectors";
 
 const BurgerIngredients = () => {
 
     const dispatch = useDispatch();
-    const { allIngredients, current } = useSelector(getIngredientsPath);
-
+    const { allIngredients, currentTab } = useSelector(getIngredientsPath);
+    
     //фильтрация массива ингридиентов
     const bun = useMemo(
         () =>
@@ -59,7 +59,7 @@ const BurgerIngredients = () => {
         if (item) {
             item.scrollIntoView({ behavior: "smooth" });
         }
-    }
+    };
 
     return (
         <section className={`${styles.ingredients}`}>
@@ -67,21 +67,21 @@ const BurgerIngredients = () => {
             <div className={`${styles.tabContainer}`}>
                 <Tab 
                     value='bun' 
-                    active={current === 'bun'}
+                    active={currentTab === 'bun'}
                     onClick={onTabClick}
                     >
                     Булки
                 </Tab>
                 <Tab 
                     value='sauce' 
-                    active={current === 'sauce'}
+                    active={currentTab === 'sauce'}
                     onClick={onTabClick}
                 >
                     Соусы
                 </Tab>
                 <Tab 
                     value='main' 
-                    active={current === 'main'}
+                    active={currentTab === 'main'}
                     onClick={onTabClick}
                 >
                     Начинки

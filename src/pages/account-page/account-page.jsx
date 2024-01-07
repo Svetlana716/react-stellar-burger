@@ -1,14 +1,14 @@
 import styles from "./account-page.module.css";
 import CustomLink from "../../components/custom-link/custom-link";
-import { logoutOfProfile } from "../../services/auth/actions";
+import { logoutOfProfile } from "../../services/user/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import { getAuthInfoPath } from "../../services/auth/selectors";
+import { getUserInfoPath } from "../../services/user/selectors";
 import RequestMessage from "../../components/request-message/request-message";
 import { useLocation } from "react-router-dom";
 
 export const AccountPage = () => {
-    const { loading } = useSelector(getAuthInfoPath);
+    const { loading } = useSelector(getUserInfoPath);
 
     const location = useLocation();
     

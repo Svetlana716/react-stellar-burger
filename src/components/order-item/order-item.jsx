@@ -1,8 +1,9 @@
 import styles from "./order-item.module.css";
 import { orderPropType } from "../../utils/prop-types";
+import { useMemo } from "react";
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderIngredients from "./order-ingredients/order-ingredients";
-import { getIngredientsPath } from "../../services/burger-ingredients/selectors";
+import { getIngredientsOnly } from "../../services/burger-ingredients/selectors";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
@@ -10,19 +11,31 @@ export const OrderItem = ({ order }) => {
     
     const { createdAt, ingredients, name, number, status } = order;
 
-    const { allIngredients } = useSelector(getIngredientsPath);
+    const allIngredients = useSelector(getIngredientsOnly);
 
     //все ингридиенты с дублями
-    const allOrderIngredients = ingredients?.map((orderIngredient) =>
-        allIngredients.find((allIngredient) => allIngredient._id === orderIngredient));
+    const allOrderIngredients = useMemo(
+        () =>
+        ingredients?.map((orderIngredient) =>
+        allIngredients.find((allIngredient) => allIngredient._id === orderIngredient)),
+        [ingredients]
+    );
 
     //расчет общей стоимости заказа
-    const orderPrice = allOrderIngredients?.reduce((acc, ingredient) => acc + ingredient.price, 0);
+    const orderPrice = useMemo(
+        () =>
+        allOrderIngredients?.reduce((acc, ingredient) => acc + ingredient.price, 0),
+        [allOrderIngredients]
+    );
 
     //список ингридиентов без дублей
-    const orderIngredients = allIngredients.filter((ingredient) => {
-                return ingredients.includes(ingredient._id);
-            });
+    const orderIngredients = useMemo(
+        () =>
+        allIngredients.filter((ingredient) => {
+            return ingredients.includes(ingredient._id);
+        }),
+        [allIngredients]
+    );
 
     const location = useLocation();
 

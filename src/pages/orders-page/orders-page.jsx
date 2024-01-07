@@ -20,7 +20,7 @@ export const OrdersPage = () => {
         }
     }, []);
 
-    const { wsConnected, connectingError, errorMessage, profileOrders } = useSelector(getProfileOrderFeedPath);
+    const { wsConnected, connectingError, profileOrders } = useSelector(getProfileOrderFeedPath);
 
     //проверка на валидность данных ингридиентов
     const isNull = (value) => {
@@ -31,7 +31,7 @@ export const OrdersPage = () => {
     return (
         <div className={styles.feedContainer}>
             {!wsConnected && <RequestMessage message={'Соединение устанавливается...'} />}
-            {connectingError && <RequestMessage message={errorMessage} />}
+            {connectingError && <RequestMessage message={connectingError.message} />}
             {wsConnected && !connectingError && profileOrders?.length > 0 && (
                     <OrdersList orders={checkOrdersArray} linkPath={'/profile/orders'}/>
             )}

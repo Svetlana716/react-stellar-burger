@@ -1,17 +1,9 @@
-export const WS_TOTAL_ORDER_FEED_CONNECT = 'WS_TOTAL_ORDER_FEED_CONNECT';
-export const WS_TOTAL_ORDER_FEED_DISCONNECT = 'WS_TOTAL_ORDER_FEED_DISCONNECT';
+import { createAction } from '@reduxjs/toolkit';
 
-export const WS_TOTAL_ORDER_FEED_CONNECTION_SUCCESS = 'WS_TOTAL_ORDER_FEED_CONNECTION_SUCCESS'; 
-export const WS_TOTAL_ORDER_FEED_CONNECTION_ERROR = 'WS_TOTAL_ORDER_FEED_CONNECTION_ERROR';
-export const WS_TOTAL_ORDER_FEED_CONNECTION_CLOSED = 'WS_TOTAL_ORDER_FEED_CONNECTION_CLOSED';
+export const totalOrderFeedConnect = createAction('WS_TOTAL_ORDER_FEED_CONNECT');
+export const totalOrderFeedDisconnect = createAction('WS_TOTAL_ORDER_FEED_DISCONNECT');
 
-export const WS_TOTAL_ORDER_FEED_GET_MESSAGE = 'WS_TOTAL_ORDER_FEED_GET_MESSAGE';
-
-export const totalOrderFeedConnect = (url) => ({
-    type: WS_TOTAL_ORDER_FEED_CONNECT,
-    payload: url,
-});
-
-export const totalOrderFeedDisconnect = () => ({
-    type: WS_TOTAL_ORDER_FEED_DISCONNECT,
-});
+export const wsTotalOrderFeedOpen = createAction('WS_TOTAL_ORDER_FEED_CONNECTION_OPEN');
+export const wsTotalOrderFeedError = createAction('WS_TOTAL_ORDER_FEED_CONNECTION_ERROR');
+export const wsTotalOrderFeedClose = createAction('WS_TOTAL_ORDER_FEED_CONNECTION_CLOSE');
+export const wsTotalOrderFeedMessage = createAction('WS_TOTAL_ORDER_FEED_GET_MESSAGE');

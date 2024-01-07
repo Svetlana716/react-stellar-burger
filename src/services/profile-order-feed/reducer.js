@@ -1,47 +1,35 @@
+import { createReducer } from "@reduxjs/toolkit";
+
 import {
-    WS_PROFILE_ORDER_FEED_CONNECTION_SUCCESS,
-    WS_PROFILE_ORDER_FEED_CONNECTION_ERROR,
-    WS_PROFILE_ORDER_FEED_CONNECTION_CLOSED,
-    WS_PROFILE_ORDER_FEED_GET_MESSAGE,
+    wsProfileOrderFeedOpen,
+    wsProfileOrderFeedError,
+    wsProfileOrderFeedClose,
+    wsProfileOrderFeedMessage,
 } from "./actions";
 
 const initialState = {
     wsConnected: false,
-    connectingError: false,
-    errorMessage: '',
+    connectingError: null,
 
     profileOrders: null,
 };
 
-export const wsProfileOrderFeedReducer = (state = initialState, action) => {
-    switch (action.type)
-    {
-        case WS_PROFILE_ORDER_FEED_CONNECTION_SUCCESS:
-            return {
-                ...state,
-                wsConnected: true,
-                connectingError: false
-            };
-        case WS_PROFILE_ORDER_FEED_CONNECTION_CLOSED:
-            return {
-                ...state,
-                wsConnected: false,
-                connectingError: false,
-            };
-        case WS_PROFILE_ORDER_FEED_CONNECTION_ERROR:
-            return {
-                ...state,
-                wsConnected: false,
-                connectingError: true,
-                errorMessage: action.payload,
-            };
-        case WS_PROFILE_ORDER_FEED_GET_MESSAGE:
-            return {
-                ...state,
-                connectingError: false,
-                profileOrders: action.payload.orders,
-            }
-        default:
-            return state;
-    }
-}
+export const profileOrderFeedReducer = createReducer(initialState, (builder) => {
+    builder
+        .addCase(wsProfileOrderFeedOpen, state => {
+            state.wsConnected = true;
+            state.connectingError = null;
+        })
+        .addCase(wsProfileOrderFeedError, (state, action) => {
+            state.wsConnected = false;
+            state.connectingError = action.error;
+        })
+        .addCase(wsProfileOrderFeedClose, state => {
+            state.wsConnected = false;
+            state.connectingError = null;
+        })
+        .addCase(wsProfileOrderFeedMessage, (state, action) => {
+            state.connectingError = null;
+            state.profileOrders = action.payload.orders;
+        })
+});

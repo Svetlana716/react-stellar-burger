@@ -5,8 +5,8 @@ import Modal from "../../modal/modal";
 import OrderDetails from "./order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
 import { getConstructorIngredientsPath } from '../../../services/burger-constructor/selectors';
-// thunk для запроса данных с сервера
-import { postOrder, resetConstructor } from '../../../services/order-details/actions';
+import { resetConstructor } from '../../../services/burger-constructor/reducer';
+import { postOrder } from '../../../services/order-details/actions';
 import { useMemo } from "react";
 import { OnlyAuth } from "../../protected-route/protected-route";
 

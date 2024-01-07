@@ -10,13 +10,13 @@ import { getIngredientsPath } from "../../services/burger-ingredients/selectors"
 
 const HomePage = () => {
   
-  const { allIngredients, ingredientsRequest, ingredientsFailed } = useSelector(getIngredientsPath);
-  
+  const { allIngredients, loading, error } = useSelector(getIngredientsPath);
+
   return (
       <div className={styles.burgerContainer}>
-        {ingredientsRequest && <RequestMessage message={'Загрузка...'} />}
-        {ingredientsFailed && <RequestMessage message={'Произошла ошибка при получении данных'} />}
-        {!ingredientsRequest && !ingredientsFailed && allIngredients.length > 0 && (
+        {loading && <RequestMessage message={'Загрузка...'} />}
+        {error && <RequestMessage message={'Произошла ошибка при получении данных'} />}
+        {!loading && !error && allIngredients.length > 0 && (
           <DndProvider backend={HTML5Backend}>
             <BurgerIngredients />
             <BurgerConstructor />

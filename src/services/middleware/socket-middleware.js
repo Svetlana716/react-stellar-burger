@@ -20,18 +20,20 @@ export const socketMiddleware = (wsActions) => {
                 onMessage
             } = wsActions;
 
-            if (type === wsConnect) {
+            if (type === wsConnect.type) {
                 url = payload;
-                socket = new WebSocket(`${url}`);
+                socket = new WebSocket(url);
             };
+
+            
 
             if (socket) {
                 socket.onopen = () => {
-                    dispatch({ type: onOpen });
+                    dispatch(onOpen());
                 };
 
                 socket.onerror = (event) => {
-                    dispatch({ type: onError, payload: event });
+                    dispatch(onError(event));
                 };
 
                 socket.onmessage = (event) => {
@@ -40,17 +42,17 @@ export const socketMiddleware = (wsActions) => {
 
                     if (data?.message === 'Invalid or missing token') {
                         refreshToken().then((res) => {
-                            dispatch({ type: wsConnect, payload: res });
+                            dispatch(wsConnect(res));
                         })
                     }
-                    dispatch({ type: onMessage, payload: parsedData });
+                    dispatch(onMessage(parsedData));
                 };
 
                 socket.onclose = () => {
                     if (closing) {
-                        dispatch({ type: onClose });
+                        dispatch(onClose());
                     } else {
-                        dispatch({ type: wsConnect, payload: url });
+                        dispatch(wsConnect(url));
                     }
                 };
 

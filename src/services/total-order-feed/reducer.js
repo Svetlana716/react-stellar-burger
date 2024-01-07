@@ -1,51 +1,39 @@
+import { createReducer } from "@reduxjs/toolkit";
+
 import {
-    WS_TOTAL_ORDER_FEED_CONNECTION_SUCCESS,
-    WS_TOTAL_ORDER_FEED_CONNECTION_ERROR,
-    WS_TOTAL_ORDER_FEED_CONNECTION_CLOSED,
-    WS_TOTAL_ORDER_FEED_GET_MESSAGE,
+    wsTotalOrderFeedOpen,
+    wsTotalOrderFeedError,
+    wsTotalOrderFeedClose,
+    wsTotalOrderFeedMessage,
 } from "./actions";
 
 const initialState = {
     wsConnected: false,
-    connectingError: false,
-    errorMessage: '',
+    connectingError: null,
 
     totalOrders: null,
     total: null,
     totalToday: null,
 };
 
-export const wsTotalOrderFeedReducer = (state = initialState, action) => {
-    switch (action.type)
-    {
-        case WS_TOTAL_ORDER_FEED_CONNECTION_SUCCESS:
-            return {
-                ...state,
-                wsConnected: true,
-                connectingError: false
-            };
-        case WS_TOTAL_ORDER_FEED_CONNECTION_CLOSED:
-            return {
-                ...state,
-                wsConnected: false,
-                connectingError: false,
-            };
-        case WS_TOTAL_ORDER_FEED_CONNECTION_ERROR:
-            return {
-                ...state,
-                wsConnected: false,
-                connectingError: true,
-                errorMessage: action.payload,
-            };
-        case WS_TOTAL_ORDER_FEED_GET_MESSAGE:
-            return {
-                ...state,
-                connectingError: false,
-                totalOrders: action.payload.orders,
-                total: action.payload.total,
-                totalToday: action.payload.totalToday,
-            }
-        default:
-            return state;
-    }
-}
+export const totalOrderFeedReducer = createReducer(initialState, (builder) => {
+    builder
+        .addCase(wsTotalOrderFeedOpen, state => {
+            state.wsConnected = true;
+            state.connectingError = null;
+        })
+        .addCase(wsTotalOrderFeedError, (state, action) => {
+            state.wsConnected = false;
+            state.connectingError = action.error;
+        })
+        .addCase(wsTotalOrderFeedClose, state => {
+            state.wsConnected = false;
+            state.connectingError = null;
+        })
+        .addCase(wsTotalOrderFeedMessage, (state, action) => {
+            state.connectingError = null;
+            state.totalOrders = action.payload.orders;
+            state.total =  action.payload.total;
+            state.totalToday = action.payload.totalToday;
+        })
+});

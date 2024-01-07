@@ -4,9 +4,9 @@ import styles from "./constructor-ingredient-item.module.css";
 import { ingredientPropType } from "../../../../../utils/prop-types";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch } from "react-redux";
-import { DELETE_OTHER_INGREDIENT } from '../../../../../services/burger-constructor/actions';
+import { deleteOtherIngredient } from '../../../../../services/burger-constructor/reducer';
 import { useDrag, useDrop } from "react-dnd";
-import { changeTheOrderOfIngredients } from "../../../../../services/burger-constructor/actions";
+import { changeTheOrderOfIngredients } from "../../../../../services/burger-constructor/reducer";
 
 const ConstructorIngredientItem = ({ ingredient, index}) => {
     const dispatch = useDispatch();
@@ -60,7 +60,7 @@ const ConstructorIngredientItem = ({ ingredient, index}) => {
 
     const handleDeleteIngredient = useCallback((ingredient) => {
         if (ingredient.type !== 'bun') {
-            dispatch({ type: DELETE_OTHER_INGREDIENT, payload: ingredient })
+            dispatch(deleteOtherIngredient(ingredient))
         }
     }, [ingredient]);
 

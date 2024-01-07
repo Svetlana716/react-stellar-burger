@@ -4,7 +4,7 @@ import { useDrop } from "react-dnd";
 import { getConstructorIngredientsPath } from "../../../../services/burger-constructor/selectors";
 import DropTarget from "../drop-target/drop-target";
 import ConstructorIngredientItem from './constructor-ingredient-item/constructor-ingredient-item';
-import { addOtherIngredient } from "../../../../services/burger-constructor/actions";
+import { addOtherIngredient } from "../../../../services/burger-constructor/reducer";
 
 
 const OtherIngredientElements = () => {

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
-import { getIngredientsPath } from "../../services/burger-ingredients/selectors";
+import { getIngredientsOnly } from "../../services/burger-ingredients/selectors";
 import { getTotalOrderFeedPath } from "../../services/total-order-feed/selectors";
 import { getProfileOrderFeedPath } from "../../services/profile-order-feed/selectors";
 import { getOrder } from "../../services/order-details/actions";
@@ -13,7 +13,7 @@ import IngredientItem from "./ingredient-item/ingredient-item";
 export const OrderFeedDetails = () => {
     const dispatch = useDispatch();
     const { number } = useParams();
-    const { allIngredients } = useSelector(getIngredientsPath);
+    const allIngredients = useSelector(getIngredientsOnly);
 
     const { totalOrders } = useSelector(getTotalOrderFeedPath);
     const { profileOrders } = useSelector(getProfileOrderFeedPath);

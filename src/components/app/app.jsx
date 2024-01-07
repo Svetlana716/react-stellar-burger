@@ -20,7 +20,7 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../burger-ingredients/ingredient-type/ingredient-details/ingredient-details";
 import OrderFeedDetails from "../order-feed-details/order-feed-details";
 //для защищенного роутинга
-import { checkUserAuth } from '../../services/auth/actions';
+import { checkUserAuth } from '../../services/user/actions';
 import { OnlyAuth, OnlyUnAuth } from "../protected-route/protected-route";
 
 const App = () => {

@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
-import { getAuthInfoPath } from "../../services/auth/selectors";
+import { getUserInfoPath } from "../../services/user/selectors";
 import RequestMessage from "../request-message/request-message";
 
 const Protected = ({ onlyUnAuth = false, component }) => {
 
-  const { user, isAuthChecked } = useSelector(getAuthInfoPath);
+  const { user, isAuthChecked } = useSelector(getUserInfoPath);
 
   const location = useLocation();
 

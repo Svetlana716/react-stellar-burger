@@ -26,4 +26,4 @@ OrderIngredients.propTypes = {
     orderIngredients: PropTypes.arrayOf(ingredientPropType).isRequired,
 };
 
-export default OrderIngredients;
+export default OrderIngredients; 

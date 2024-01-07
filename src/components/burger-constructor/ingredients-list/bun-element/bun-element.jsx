@@ -4,7 +4,7 @@ import { useDrop } from "react-dnd";
 import { getConstructorIngredientsPath } from "../../../../services/burger-constructor/selectors";
 import DropTarget from "../drop-target/drop-target";
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { addBun } from "../../../../services/burger-constructor/actions";
+import { addBun } from "../../../../services/burger-constructor/reducer";
 
 
 const BunElement = ({ type }) => {

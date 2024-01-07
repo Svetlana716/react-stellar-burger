@@ -1,11 +1,11 @@
 import styles from "./ingredient-details.module.css";
 import { useParams } from 'react-router-dom';
 import { useSelector } from "react-redux";
-import { getIngredientsPath } from '../../../../services/burger-ingredients/selectors';
+import { getIngredientsOnly } from '../../../../services/burger-ingredients/selectors';
 
 const IngredientDetails = () => {
 
-    const { allIngredients } = useSelector(getIngredientsPath);
+    const allIngredients = useSelector(getIngredientsOnly);
     const { ingredientId } = useParams();
 
     const getIngredientById = (id) => {
