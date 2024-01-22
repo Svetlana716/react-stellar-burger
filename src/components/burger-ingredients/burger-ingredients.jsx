@@ -1,83 +1,118 @@
-import { useState, useMemo, useRef } from "react";
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import PropTypes from "prop-types";
-import { ingredientPropType } from "../../utils/prop-types";
+import { useInView } from 'react-intersection-observer';
+import { useMemo, useEffect } from "react";
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from "./burger-ingredients.module.css";
-import IngredientType from "./ingredient-type/ingredient-type"
+import IngredientType from "./ingredient-type/ingredient-type";
+import { useSelector, useDispatch } from "react-redux";
+import { setCurrentTab } from '../../services/burger-ingredients/reducer';
+//путь до селектора
+import { getIngredientsPath } from "../../services/burger-ingredients/selectors";
 
-const BurgerIngredients = ({ ingredients }) => {
-    //задаем стейт компонента
-    const [current, setCurrent] = useState('bun');
+const BurgerIngredients = () => {
 
+    const dispatch = useDispatch();
+    const { allIngredients, currentTab } = useSelector(getIngredientsPath);
+    
     //фильтрация массива ингридиентов
     const bun = useMemo(
         () =>
-            ingredients.filter((ingredient) => {
+            allIngredients.filter((ingredient) => {
                 return ingredient.type === 'bun';
             }),
-        [ingredients]
+        [allIngredients]
     );
 
     const sauce = useMemo(
         () =>
-            ingredients.filter((ingredient) => {
+            allIngredients.filter((ingredient) => {
                 return ingredient.type === 'sauce';
             }),
-        [ingredients]
+        [allIngredients]
     );
 
     const main = useMemo(
         () =>
-            ingredients.filter((ingredient) => {
+            allIngredients.filter((ingredient) => {
                 return ingredient.type === 'main';
             }),
-        [ingredients]
+        [allIngredients]
     );
 
-    // ссылки на тип ингридиента в списке 
-    const bunRef = useRef(null);
-    const sauceRef = useRef(null);
-    const mainRef = useRef(null);
+    const [bunRef, inViewBun] = useInView({ threshold: 0 });
+    const [sauceRef, inViewSauce] = useInView({ threshold: 0 });
+    const [mainRef, inViewMain] = useInView({ threshold: 0 });
 
-    //скролл к выбранному типу ингридиента
-    const handleScroll = (value) => {
-        setCurrent(value)
-        if (value === 'bun') bunRef.current.scrollIntoView({ behavior: "smooth" });
-        if (value === 'sauce') sauceRef.current.scrollIntoView({ behavior: "smooth" });
-        if (value === 'main') mainRef.current.scrollIntoView({ behavior: "smooth" });
+
+    useEffect(() => {
+        if (inViewBun) {
+            dispatch(setCurrentTab('bun'))
+        } else if (inViewSauce) {
+            dispatch(setCurrentTab('sauce'))
+        } else if (inViewMain) {
+            dispatch(setCurrentTab('main'))
+        }
+    }, [inViewBun, inViewSauce, inViewMain]);
+
+    const onTabClick = (tab) => {
+        dispatch(setCurrentTab(tab));
+        const item = document.getElementById(tab);
+        if (item) {
+            item.scrollIntoView({ behavior: "smooth" });
+        }
     };
 
     return (
         <section className={`${styles.ingredients}`}>
-            <h1 className={`text text_type_main-large`}>Соберите бургер</h1>
+            <h1 className='text text_type_main-large'>Соберите бургер</h1>
             <div className={`${styles.tabContainer}`}>
-                <Tab value='bun' active={current === 'bun'} onClick={handleScroll}>
+                <Tab 
+                    value='bun' 
+                    active={currentTab === 'bun'}
+                    onClick={onTabClick}
+                    >
                     Булки
                 </Tab>
-                <Tab value='sauce' active={current === 'sauce'} onClick={handleScroll}>
+                <Tab 
+                    value='sauce' 
+                    active={currentTab === 'sauce'}
+                    onClick={onTabClick}
+                >
                     Соусы
                 </Tab>
-                <Tab value='main' active={current === 'main'} onClick={handleScroll}>
+                <Tab 
+                    value='main' 
+                    active={currentTab === 'main'}
+                    onClick={onTabClick}
+                >
                     Начинки
                 </Tab>
             </div>
-            <ul className={`${styles.ingredientsContainer} custom-scroll`}>
+            <ul className={styles.ingredientsContainer}>
                 <li ref={bunRef}>
-                    <IngredientType title={'Булки'} ingredientType={bun}  />
+                    <IngredientType 
+                        title='Булки' 
+                        titleId= 'bun'
+                        ingredientType={bun} 
+                        />
                 </li>
                 <li ref={sauceRef}>
-                    <IngredientType title={'Соусы'} ingredientType={sauce}  />
+                    <IngredientType 
+                        title='Соусы'
+                        titleId= 'sauce'
+                        ingredientType={sauce} 
+                    />
                 </li>
                 <li ref={mainRef}>
-                    <IngredientType title={'Начинки'} ingredientType={main}  />
+                    <IngredientType 
+                        title={'Начинки'} 
+                        titleId= 'main'
+                        ingredientType={main} 
+                    />
                 </li>
             </ul>
         </section>
     );
 };
 
-BurgerIngredients.propTypes = {
-    ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
-};
 
 export default BurgerIngredients;

@@ -1,48 +1,70 @@
-import { useState, useMemo } from "react";
-import PropTypes from "prop-types";
-import { ingredientPropType } from "../../../utils/prop-types";
+import { useModal } from "../../../hooks/useModal";
 import styles from "./burger-order.module.css";
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../../modal/modal";
-import OrderDetails from "./order-details/order-details"
+import OrderDetails from "./order-details/order-details";
+import { useDispatch, useSelector } from "react-redux";
+import { getConstructorIngredientsPath } from '../../../services/burger-constructor/selectors';
+import { resetConstructor } from '../../../services/burger-constructor/reducer';
+import { postOrder } from '../../../services/order-details/actions';
+import { useMemo } from "react";
+import { OnlyAuth } from "../../protected-route/protected-route";
 
-const BurgerOrder = ({ ingredients }) => {
 
-    const [modalVisible, setModalVisible] = useState(false);
+const BurgerOrder = () => {
+    const dispatch = useDispatch();
 
-    const handleOpenModal = () => {
-        setModalVisible(true);
+    const { bun, otherIngredients } = useSelector(getConstructorIngredientsPath);
+
+    const { isModalOpen, closeModal, openModal } = useModal();
+
+    //функция, создающая массив из id ингридиентов для post запроса 
+    const getIngredientsId = () => {
+        if (bun !== null) {
+            const bunId = bun._id;
+            const otherIngredientsId = otherIngredients.map(item => item._id);
+            return [bunId, ...otherIngredientsId, bunId]
+        }
+    };
+
+    const handleMakeOrder = () => {
+        dispatch(postOrder(getIngredientsId()));
+        openModal();
     };
 
     const handleCloseModal = () => {
-        setModalVisible(false);
+        closeModal();
+        dispatch(resetConstructor());
     };
-    // стоимость корзины
-    const total = useMemo(
-        () =>
-        ingredients.reduce((acc, ingredient) => acc + ingredient.price, 0),
-        [ingredients]
-    );
+
+    const priceCounter = useMemo(() => {
+        if (bun) {
+            const otherIngredientsPrice = otherIngredients.reduce((acc, el) => acc + el.price, 0);
+            const bunPrice = bun.price * 2;
+            return otherIngredientsPrice + bunPrice;
+        } else {
+            return 0;
+        }
+    }, [otherIngredients, bun]);
 
     return (
         <section className={`${styles.burgerOrder}`}>
             <div className={`${styles.orderContainer}`}>
-                <span className="text text_type_digits-medium">{total}</span>
+                <span className="text text_type_digits-medium">{priceCounter}</span>
                 <CurrencyIcon type="primary" />
             </div>
-            <Button onClick={handleOpenModal} htmlType="button" type="primary" size="large">
-                Оформить заказ
-            </Button>
-            {modalVisible && 
-                <Modal onClose={handleCloseModal}>
-                    <OrderDetails />
-                </Modal>}
+            {!bun && <Button disabled htmlType="button" type="primary" size="large">
+                Оформить заказ</Button>}
+            {bun && <Button onClick={handleMakeOrder} htmlType="button" type="primary" size="large">
+                Оформить заказ</Button>}
+
+            {isModalOpen &&
+                <OnlyAuth component={
+                    <Modal onClose={handleCloseModal}>
+                        <OrderDetails />
+                    </Modal>} />}
         </section>
     );
-};
-
-BurgerOrder.propTypes = {
-    ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };
 
 export default BurgerOrder;

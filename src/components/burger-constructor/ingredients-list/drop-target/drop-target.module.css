@@ -1,0 +1,25 @@
+.dropContainer {
+    background:  #1C1C21;
+    border-radius: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+}
+
+.bunTopDropContainer {
+    border-radius: 88px 88px 40px 40px;
+    width: 568px;
+    height: 80px;
+};
+
+.bunBottomDropContainer { 
+    border-radius: 40px 40px 88px 88px; 
+    width: 568px;
+    height: 80px;
+};
+
+.otherIngredientsDropContainer {
+    border-radius: 40px;
+    width: 100%;
+    height: 100%;
+};

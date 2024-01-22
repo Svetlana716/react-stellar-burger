@@ -1,57 +1,45 @@
-import { useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { ingredientPropType } from "../../../utils/prop-types";
 import styles from "./ingredient-type.module.css";
 import IngredientItem from "../ingredient-item/ingredient-item";
-import Modal from "../../modal/modal";
-import IngredientDetails from "./ingredient-details/ingredient-details"
+import { useSelector } from "react-redux";
+import { getConstructorIngredientsPath } from '../../../services/burger-constructor/selectors';
+import { Link, useLocation } from "react-router-dom";
 
-const IngredientType = ({ title, ingredientType }) => {
-  // стейт компонента
-  const [modalVisible, setModalVisible] = useState(false);
-  const [currentIngredient, setCurrentIngredient] = useState(null);
+const IngredientType = ({ title, titleId, ingredientType }) => {
+  const { bun, otherIngredients } = useSelector(getConstructorIngredientsPath);
 
-  // обработчики событий(изменение стейта)
-  const handleOpenModal = useCallback ((item) => {
-    setCurrentIngredient(item);
-    setModalVisible(true);
-  }, []);
+  //функции для счетчика ингридиента
+  const bunCounter = (ingredient) => {
+    if (bun !== null) {
+      return bun._id === ingredient._id ? 2 : 0;
+    }
+  };
 
-  const handleCloseModal = useCallback (() => {
-    setModalVisible(false);
-  }, []);
+  const ingredientCounter = (ingredient) => {
+    const otherIngredientsList = otherIngredients.filter(item => item.name === ingredient.name);
+    return otherIngredientsList.length;
+  };
 
-  // колличество конкретного ингридиента(для счетчика ингридиента)
-  const ingredientCount = useMemo(
-    () =>
-      ingredientType.reduce(function (prevVal, item) {
-        if (!prevVal[item]) {
-          prevVal[item] = 1;
-        } else {
-          prevVal[item] += 1;
-        }
-
-        return prevVal;
-      }, {}),
-    [ingredientType]
-  );
+  const location = useLocation();
 
   return (
     <section>
-      <h2 className="text text_type_main-medium">{title}</h2>
-      <ul className={`${styles.typeList}`}>
+      <h2 className="text text_type_main-medium" id={titleId}>{title}</h2>
+      <div className={`${styles.typeList}`}>
         {ingredientType.map(ingredient => {
           return (
-            <li onClick={() => handleOpenModal(ingredient)} key={ingredient._id} className={`${styles.listItem}`}>
-              <IngredientItem ingredient={ingredient} count={ingredientCount.prevVal} />
-            </li>
+            <Link
+              key={ingredient._id}
+              to={`/ingredients/${ingredient._id}`}
+              state={{ background: location }}
+              className={styles.link}
+            >
+              <IngredientItem ingredient={ingredient} count={ingredient.type === 'bun' ? bunCounter(ingredient) : ingredientCounter(ingredient)} />
+            </Link>
           )
         })}
-      </ul>
-      {modalVisible && currentIngredient &&
-        <Modal onClose={handleCloseModal}>
-          <IngredientDetails ingredient={currentIngredient} />
-        </Modal>}
+      </div>
     </section>
   )
 };
@@ -59,6 +47,7 @@ const IngredientType = ({ title, ingredientType }) => {
 IngredientType.propTypes = {
   ingredientType: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
   title: PropTypes.string.isRequired,
+  titleId: PropTypes.string.isRequired,
 };
 
 export default IngredientType;
