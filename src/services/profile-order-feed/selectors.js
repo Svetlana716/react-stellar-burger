@@ -1,1 +1,0 @@
-export const getProfileOrderFeedPath = store => store.profileOrderFeed;
