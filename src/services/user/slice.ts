@@ -2,29 +2,30 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { getUserInfo, updateUserInfo, login, logout, registerUser } from "../../utils/api";
 import { UserType, FetchRegistrationOrAuthorizationUserSuccessType, FetchGetOrUpdateUserSuccessType, FetchLogoutOfProfileSuccessType, FetchErrorType } from '../../utils/types';
 
-export const getUser = createAsyncThunk/* <FetchGetOrUpdateUserSuccessType, undefined, { rejectValue: FetchErrorType }> */(
+export const getUser = createAsyncThunk(
   'user/getUser',
-  async () => {
+  async (_, { dispatch }) => {
     try {
-      const res = await getUserInfo();
-      setUser(res.user)
+      const res: FetchGetOrUpdateUserSuccessType = await getUserInfo();
+      dispatch(setUser(res.user));
     } catch (err) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      setUser(null);
+      dispatch(setUser(null));
     } finally {
-      setAuthChecked(true)
+      dispatch(setAuthChecked(true))
     }
   }
 );
 
 export const checkUserAuth = createAsyncThunk(
   'user/checkAuth',
-  async () => {
+  async (_, { dispatch }) => {
     if (localStorage.getItem("accessToken")) {
-      getUser()
+      dispatch(getUser())
+      dispatch(setAuthChecked(true))
   } else {
-      setAuthChecked(true);
+      dispatch(setAuthChecked(true))
   }
   }
 );

@@ -17,7 +17,7 @@ export const ForgotPasswordPage = () => {
     navigate('/login');
   };
 
-  const handleResetPasswordFirstStep: React.ReactEventHandler = (e) => {
+  const handleResetPasswordFirstStep = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetPasswordFirstStep(email)
       .then(res => {

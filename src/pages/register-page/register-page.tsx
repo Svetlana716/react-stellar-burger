@@ -23,7 +23,7 @@ export const RegisterPage = () => {
     navigate('/login');
   };
 
-  const handleRegisterUser: React.ReactEventHandler = (e) => {
+  const handleRegisterUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(registrationUser({ email, password, name }));
   };

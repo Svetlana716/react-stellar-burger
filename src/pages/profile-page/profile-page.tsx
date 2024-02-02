@@ -20,7 +20,7 @@ export const ProfilePage = () => {
 
     const { email, password, name } = values;
 
-    const handleUserDataChange: React.ReactEventHandler = (e) => {
+    const handleUserDataChange = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(updateUser({ email, name }));
     };

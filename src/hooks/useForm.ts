@@ -7,7 +7,7 @@ type InputType = {
 export function useForm(inputValues: InputType) {
     const [values, setValues] = useState(inputValues);
   
-    const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const {value, name} = e.target;
       setValues({...values, [name]: value});
     };

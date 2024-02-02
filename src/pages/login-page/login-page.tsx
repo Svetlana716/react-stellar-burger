@@ -27,7 +27,7 @@ const LoginPage = () => {
         navigate('/forgot-password');
     };
 
-    const handleLogin: React.ReactEventHandler = (e) => {
+    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(loginToProfile({ email, password }));
     };

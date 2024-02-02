@@ -18,7 +18,7 @@ export const ResetPasswordPage = () => {
     navigate('/login');
   };
 
-  const handleResetPasswordSecondStep: React.ReactEventHandler = (e) => {
+  const handleResetPasswordSecondStep = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetPasswordSecondStep(password, token)
       .then(() => {
